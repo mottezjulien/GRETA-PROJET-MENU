@@ -21,15 +21,15 @@ public class OrganizerDTOWrapper {
         OrganizerDTO dto = new OrganizerDTO();
         dto.setLabel(model.getLabel());
 
-        dto.setMonday(findOrCreateByDayOfWeek(model.meals(), DayOfWeek.MONDAY));
-        dto.setTuesday(findOrCreateByDayOfWeek(model.meals(), DayOfWeek.TUESDAY));
-        dto.setWednesday(findOrCreateByDayOfWeek(model.meals(), DayOfWeek.WEDNESDAY));
-        dto.setThursday(findOrCreateByDayOfWeek(model.meals(), DayOfWeek.THURSDAY));
-        dto.setFriday(findOrCreateByDayOfWeek(model.meals(), DayOfWeek.FRIDAY));
-        dto.setSaturday(findOrCreateByDayOfWeek(model.meals(), DayOfWeek.SATURDAY));
-        dto.setSunday(findOrCreateByDayOfWeek(model.meals(), DayOfWeek.SUNDAY));
+        dto.setMonday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.MONDAY));
+        dto.setTuesday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.TUESDAY));
+        dto.setWednesday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.WEDNESDAY));
+        dto.setThursday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.THURSDAY));
+        dto.setFriday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.FRIDAY));
+        dto.setSaturday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.SATURDAY));
+        dto.setSunday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.SUNDAY));
 
-        dto.setNoMatterDay(findOrCreate(model.meals(), meal -> meal.isNoMatterDay()));
+        dto.setNoMatterDay(findOrCreate(model.days(), meal -> meal.isNoMatterDay()));
 
         return dto;
     }
