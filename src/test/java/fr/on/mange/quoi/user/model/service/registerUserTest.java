@@ -36,7 +36,7 @@ public class registerUserTest {
 
         Optional <UserEntity> testUser = userRepository.findByLogin("testUser");
 
-        assertNotNull(testUser.isPresent());
+        assertTrue(testUser.isPresent());
         assertEquals(newUser.getLogin(), testUser.get().getLogin());
 
     }
