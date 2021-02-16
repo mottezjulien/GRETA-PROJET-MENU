@@ -5,9 +5,11 @@ import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
 import fr.on.mange.quoi.user.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/user")
 public class UserController{
     @Autowired
     private UserRegistrationDTOWrapper wrapper;
@@ -15,8 +17,14 @@ public class UserController{
     @Autowired
     private UserService service;
 
-    public String registerUser(@RequestParam UserRegistrationDTO userDTO){
+    @PostMapping(value = "/register")
+    public String registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO){
             service.saveNewUser(wrapper.fromDTO(userDTO));
             return "redirect:/";
+    }
+
+    @GetMapping(value = "/register")
+    public ModelAndView displayRegisterForm(){
+        return new ModelAndView("register");
     }
 }
