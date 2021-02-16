@@ -14,7 +14,7 @@ public class UserService {
     @Autowired
     private UserWrapper wrapper;
 
-    public User saveNewUser(User user){
+    public User saveNewUser(User user) {
         return wrapper.fromEntity(repository.save(wrapper.toEntity(user)));
     }
 }

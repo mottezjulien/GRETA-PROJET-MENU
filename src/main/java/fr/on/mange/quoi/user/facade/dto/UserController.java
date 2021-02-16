@@ -16,10 +16,7 @@ public class UserController{
     private UserService service;
 
     public String registerUser(@RequestParam UserRegistrationDTO userDTO){
-        try{
             service.saveNewUser(wrapper.fromDTO(userDTO));
-        }catch(ApplicationServiceException e){
-            return "redirect:/?error";
-        }
+            return "redirect:/";
     }
 }
