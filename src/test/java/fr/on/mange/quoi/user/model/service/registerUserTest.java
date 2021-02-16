@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class registerUserTest {
@@ -33,10 +34,11 @@ public class registerUserTest {
         newUser.setPassword("maga2020!");
         userControllerTest.registerUser(newUser);
 
-        UserEntity testUser = userRepository.findByLogin("testUser");
+        Optional <UserEntity> testUser = userRepository.findByLogin("testUser");
 
-        assertNotNull(testUser);
-        assertEquals(newUser.getLogin(), testUser.getLogin());
+        assertNotNull(testUser.isPresent());
+        assertEquals(newUser.getLogin(), testUser.get().getLogin());
+
     }
 
 }
