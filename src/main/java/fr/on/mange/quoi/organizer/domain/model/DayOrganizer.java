@@ -1,6 +1,7 @@
 package fr.on.mange.quoi.organizer.domain.model;
 
 import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizer;
+import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoriesChoiceOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.day.Day;
 import fr.on.mange.quoi.organizer.domain.model.day.DayNoMatter;
 import fr.on.mange.quoi.organizer.domain.model.day.DayOfWeek;
@@ -35,5 +36,10 @@ public class DayOrganizer {
     public Map<MealOrganizer, ChoiceOrganizer> choiceByType() {
         return new HashMap<>(choiceByType);
     }
+
+    public Optional<String> getOptId() {
+        return optId;
+    }
+
 
 }
