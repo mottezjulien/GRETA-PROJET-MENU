@@ -1,6 +1,5 @@
 package fr.on.mange.quoi.user.facade.dto;
 
-import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
 import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
 import fr.on.mange.quoi.user.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +25,10 @@ public class UserController{
     @GetMapping(value = "/register")
     public ModelAndView displayRegisterForm(){
         return new ModelAndView("register");
+    }
+
+    @GetMapping(value = "/login")
+    public ModelAndView displayLoginPage(){
+        return new ModelAndView("login");
     }
 }
