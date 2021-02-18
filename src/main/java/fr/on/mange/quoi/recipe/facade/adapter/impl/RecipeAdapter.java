@@ -7,7 +7,9 @@ import fr.on.mange.quoi.recipe.persistence.repository.RecipeCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class RecipeAdapter implements RecipeExternalAdapter {
@@ -25,5 +27,14 @@ public class RecipeAdapter implements RecipeExternalAdapter {
         return categoryRepository
                 .findById(categoryId)
                 .map(category -> new IdLabelDTO(category.getId(), category.getLabel()));
+    }
+
+    @Override
+    public List<IdLabelDTO> findAllCategories() {
+        return categoryRepository
+                .findAll()
+                .stream()
+                .map(category -> new IdLabelDTO(category.getId(), category.getLabel()))
+                .collect(Collectors.toList());
     }
 }
