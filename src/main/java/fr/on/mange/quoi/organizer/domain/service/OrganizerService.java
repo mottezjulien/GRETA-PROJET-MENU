@@ -46,4 +46,31 @@ public class OrganizerService {
         }
         throw new ApplicationServiceException("Any organisation found");
     }
+
+    public Organizer findByUserId(String userId) throws ApplicationServiceException {
+        Optional<OrganizerEntity> optEntity = repository.findByUserId(userId);
+
+        if(optEntity.isPresent()){
+            try {
+                return wrapper.fromEntity(optEntity.get());
+            } catch (ApplicationCommunicationException e) {
+                throw new ApplicationServiceException(e);
+            }
+        }
+        throw new ApplicationServiceException("Organizer not found");
+    }
+
+    public Organizer findByLabel(String label) throws ApplicationServiceException {
+        Optional<OrganizerEntity> optEntity = repository.findByLabel(label);
+
+        if(optEntity.isPresent()){
+            try {
+                return wrapper.fromEntity(optEntity.get());
+            } catch (ApplicationCommunicationException e) {
+                throw new ApplicationServiceException(e);
+            }
+        }
+        throw new ApplicationServiceException("Organizer not found");
+    }
+
 }
