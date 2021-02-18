@@ -1,6 +1,10 @@
-package fr.on.mange.quoi.user.facade.dto;
+package fr.on.mange.quoi.user.facade;
 
+import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
+import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
+import fr.on.mange.quoi.user.facade.dto.UserRegistrationDTO;
 import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
+import fr.on.mange.quoi.user.model.User;
 import fr.on.mange.quoi.user.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +20,15 @@ public class UserController{
     @Autowired
     private UserService service;
 
+    @Autowired
+    private OrganizerRepository organizerRepository;
+
     @PostMapping(value = "/register")
-    public String registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO){
-            service.saveNewUser(wrapper.fromDTO(userDTO));
-            return "redirect:/";
+    public ModelAndView registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO){
+            User user = service.saveNewUser(wrapper.fromDTO(userDTO));
+            organizerRepository.save(new OrganizerEntity(user.getOptId().get(),"Test 1"));
+
+            return new ModelAndView("redirect:/");
     }
 
     @GetMapping(value = "/register")

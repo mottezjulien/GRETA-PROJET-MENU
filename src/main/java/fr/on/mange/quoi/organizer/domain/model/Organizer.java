@@ -12,6 +12,8 @@ public class Organizer {
 
     private List<DayOrganizer> days = new ArrayList<>();
 
+    private Optional<String> optUserId = Optional.empty();
+
     public Optional<String> getOptId() {
         return optId;
     }
@@ -36,9 +38,19 @@ public class Organizer {
         return new ArrayList<>(days);
     }
 
+    public List<DayOrganizer> getDays() {
+        return days;
+    }
 
+    public void setDays(List<DayOrganizer> days) {
+        this.days = days;
+    }
 
+    public Optional<String> getOptUserId() {
+        return optUserId;
+    }
 
-
-
+    public void setOptUserId(Optional<String> optUserId) {
+        this.optUserId = optUserId;
+    }
 }
