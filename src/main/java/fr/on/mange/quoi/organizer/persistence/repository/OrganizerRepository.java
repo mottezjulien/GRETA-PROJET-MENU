@@ -20,7 +20,7 @@ public interface OrganizerRepository extends JpaRepository<OrganizerEntity, Stri
     Optional<OrganizerEntity> findByLabel(String label);
 
     Optional<OrganizerEntity> findByUserId(String userId);
-    Optional<List<OrganizerEntity>> findAllByUserId(String userId);
 
+    Optional<List<OrganizerEntity>> findAllByUserId(String userId);
 
 }

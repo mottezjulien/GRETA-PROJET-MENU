@@ -49,11 +49,10 @@ public class OrganizerService {
     }
 
     public Organizer findByUserId(String userId) throws ApplicationServiceException {
-        Optional<OrganizerEntity> optEntity = repository.findByUserId(userId);
-
+        Optional<List<OrganizerEntity>> optEntity = repository.findAllByUserId(userId);
         if(optEntity.isPresent()){
             try {
-                return wrapper.fromEntity(optEntity.get());
+                return wrapper.fromEntity(optEntity.get().stream().findFirst().get());
             } catch (ApplicationCommunicationException e) {
                 throw new ApplicationServiceException(e);
             }
@@ -88,6 +87,4 @@ public class OrganizerService {
             throw new ApplicationServiceException("Organizer not found");
         }
     }
-
-
 }
