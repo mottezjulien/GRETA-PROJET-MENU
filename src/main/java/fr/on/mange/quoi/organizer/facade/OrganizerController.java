@@ -6,6 +6,7 @@ import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
 import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
 import fr.on.mange.quoi.organizer.facade.dto.OrganizerDTO;
 import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerDTOWrapper;
+import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerListDTOWrapper;
 import fr.on.mange.quoi.user.facade.dto.UserIdDTO;
 import fr.on.mange.quoi.user.facade.dto.UserIdDTOWrapper;
 import fr.on.mange.quoi.user.model.service.UserService;
@@ -29,6 +30,9 @@ public class OrganizerController {
     private UserIdDTOWrapper userIdDTOWrapper;
 
     @Autowired
+    private OrganizerListDTOWrapper listDTOWrapper;
+
+    @Autowired
     private OrganizerDTOWrapper wrapper;
 
     @Autowired
@@ -48,6 +52,8 @@ public class OrganizerController {
                 String login = auth.getName();
 
                 UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(login));
+
+                modelAndView.addObject("organizers", listDTOWrapper.fromModels(organizerService.findAllByUserId(userIdDTO.getUuid())));
                 organizerDTO = wrapper.fromModel(organizerService.findByUserId(userIdDTO.getUuid()));
             }else{
                 organizerDTO = wrapper.fromModel(organizerService.findByLabel(ORGA_EXAMPLE));
