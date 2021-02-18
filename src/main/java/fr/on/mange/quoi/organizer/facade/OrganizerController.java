@@ -54,6 +54,7 @@ public class OrganizerController {
                 UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(login));
 
                 modelAndView.addObject("organizers", listDTOWrapper.fromModels(organizerService.findAllByUserId(userIdDTO.getUuid())));
+
                 organizerDTO = wrapper.fromModel(organizerService.findByUserId(userIdDTO.getUuid()));
             }else{
                 organizerDTO = wrapper.fromModel(organizerService.findByLabel(ORGA_EXAMPLE));

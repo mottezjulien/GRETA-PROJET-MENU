@@ -50,6 +50,7 @@ public class OrganizerService {
     }
 
     public Organizer findByUserId(String userId) throws ApplicationServiceException {
+
         Optional<OrganizerEntity> optEntity = repository.findByUserId(userId)
                 .stream()
                 .findFirst();
@@ -77,6 +78,7 @@ public class OrganizerService {
         throw new ApplicationServiceException("Organizer not found");
     }
 
+
     public List<Organizer> findAllByUserId(String UserId) throws ApplicationServiceException {
         Optional<List<OrganizerEntity>> optListEntity= repository.findAllByUserId(UserId);
 
@@ -90,5 +92,4 @@ public class OrganizerService {
             throw new ApplicationServiceException("Organizer not found");
         }
     }
-
 }

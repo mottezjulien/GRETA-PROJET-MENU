@@ -17,6 +17,7 @@ public class DayOrganizerDTOWrapper {
 
     public DayOrganizerDTO fromModel(DayOrganizer model) {
         DayOrganizerDTO dto = new DayOrganizerDTO();
+        dto.setId(model.getOptId().get());
         Map<MealOrganizer, ChoiceOrganizer> choiceByType = model.choiceByType();
         List<MealOrganizer> orderKey = mealsOrderByType(choiceByType);
         for (MealOrganizer type : orderKey) {
@@ -30,5 +31,4 @@ public class DayOrganizerDTOWrapper {
         Collections.sort(orderKey, Comparator.comparingInt(Enum::ordinal));
         return orderKey;
     }
-
 }

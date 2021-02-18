@@ -13,10 +13,6 @@ public class RecipeCategoryChoiceOrganizer {
         this.label = label;
     }
 
-    public RecipeCategoryChoiceOrganizer(String label) {
-        this.label = label;
-    }
-
     public Optional<String> optRecipeCategoryId() {
         return optRecipeCategoryId;
     }

@@ -1,18 +1,13 @@
 package fr.on.mange.quoi.organizer.domain.service;
 
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
-import fr.on.mange.quoi.generic.facade.IdLabelDTO;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoriesChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoryChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeDishChoiceOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.day.Day;
 import fr.on.mange.quoi.organizer.domain.model.day.DayNoMatter;
 import fr.on.mange.quoi.organizer.domain.model.day.DayOfWeek;
 import fr.on.mange.quoi.organizer.persistence.entity.*;
-import fr.on.mange.quoi.recipe.facade.adapter.RecipeExternalAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +52,4 @@ public class DayOrganizerWrapper {
         }
         return meal;
     }
-
-
 }

@@ -1,13 +1,16 @@
 package fr.on.mange.quoi.organizer.facade.wrapper;
 
+import fr.on.mange.quoi.generic.facade.IdLabelDTO;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.Organizer;
+import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoryChoiceOrganizer;
 import fr.on.mange.quoi.organizer.facade.dto.DayOrganizerDTO;
 import fr.on.mange.quoi.organizer.facade.dto.OrganizerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -46,6 +49,4 @@ public class OrganizerDTOWrapper {
                 .map(meal -> itemWrapper.fromModel(meal))
                 .orElse(new DayOrganizerDTO());
     }
-
-
 }
