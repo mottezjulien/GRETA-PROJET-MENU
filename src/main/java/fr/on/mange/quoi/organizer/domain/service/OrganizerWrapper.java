@@ -19,6 +19,7 @@ public class OrganizerWrapper {
         Organizer model = new Organizer();
         model.setOptId(Optional.of(entity.getId()));
         model.setLabel(entity.getLabel());
+        model.setOptUserId(Optional.ofNullable(entity.getUserId()));
         for (DayOrganizerEntity day: entity.getDays()) {
             model.insert(dayWrapper.fromEntity(day));
         }

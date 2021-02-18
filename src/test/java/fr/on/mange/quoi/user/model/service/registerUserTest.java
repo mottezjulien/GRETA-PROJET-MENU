@@ -1,6 +1,6 @@
 package fr.on.mange.quoi.user.model.service;
 
-import fr.on.mange.quoi.user.facade.dto.UserController;
+import fr.on.mange.quoi.user.facade.UserController;
 import fr.on.mange.quoi.user.facade.dto.UserRegistrationDTO;
 import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
 import fr.on.mange.quoi.user.persistance.UserEntity;
