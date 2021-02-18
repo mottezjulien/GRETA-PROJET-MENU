@@ -72,5 +72,4 @@ public class OrganizerService {
         }
         throw new ApplicationServiceException("Organizer not found");
     }
-
 }

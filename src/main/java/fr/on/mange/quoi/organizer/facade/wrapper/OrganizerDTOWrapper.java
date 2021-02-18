@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 @Component
@@ -23,6 +24,7 @@ public class OrganizerDTOWrapper {
     public OrganizerDTO fromModel(Organizer model) {
         OrganizerDTO dto = new OrganizerDTO();
         dto.setLabel(model.getLabel());
+        dto.setUserId(model.getOptUserId().get());
 
         dto.setMonday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.MONDAY));
         dto.setTuesday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.TUESDAY));

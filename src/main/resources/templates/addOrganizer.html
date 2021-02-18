@@ -39,28 +39,20 @@
     <section class="jumbotron text-center">
         <div class="container">
             <h1 class="jumbotron-heading">Organisateur de Menu</h1>
-            <h2 class="h2">Choix de catégories</h2>
-            <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
-                etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-            <p>
-                <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-            </p>-->
+            <h2 class="h2">Créer un nouveau Organiseur</h2>
         </div>
     </section>
 
     <div class="album py-5 bg-light">
         <div class="container"> 
-        <form class="form" name="request" action="/addCategories" method="post"> 
-            <input type="hidden" th:value="${dayId}" name="dayId"/>   
-            <select class="form-select form-select-sm" name="categoryId">
-                <option selected>Séléctionner une catégorie</option>
-                <option th:each="category : ${allCategories}"
-                                th:value="${category.id}"
-                                th:text="${category.label}" />
-            </select>
-            <button class="btn btn-sm btn-outline-secondary" type="submit">Valider</button>
-        </form>
+            
+                <form class="form" name="request" action="/organizer/new" method="POST"> 
+                    <input type="hidden" th:value="${userId}" name="id"/> 
+                    <input type="text" id="inputLabel" class="form-control" name="label"  required autofocus/>
+                    <label for="inputLabel">Donner un nom à votre nouveau organisateur:</label>
+                    <button class="btn btn-sm btn-outline-secondary" type="submit">Valider</button>
+                </form>
+            
         </div>
     </div>
 
