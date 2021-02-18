@@ -50,9 +50,11 @@ public class OrganizerService {
     }
 
     public Organizer findByUserId(String userId) throws ApplicationServiceException {
+
         Optional<OrganizerEntity> optEntity = repository.findByUserId(userId)
                 .stream()
                 .findFirst();
+
 
         if(optEntity.isPresent()){
             try {
@@ -90,5 +92,4 @@ public class OrganizerService {
             throw new ApplicationServiceException("Organizer not found");
         }
     }
-
 }
