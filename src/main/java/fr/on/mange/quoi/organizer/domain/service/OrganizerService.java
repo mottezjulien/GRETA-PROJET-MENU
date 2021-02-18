@@ -8,6 +8,7 @@ import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -72,5 +73,21 @@ public class OrganizerService {
         }
         throw new ApplicationServiceException("Organizer not found");
     }
+
+
+    public List<Organizer> findAllByUserId(String UserId) throws ApplicationServiceException {
+        Optional<List<OrganizerEntity>> optListEntity= repository.findAllByUserId(UserId);
+
+        if(optListEntity.isPresent()){
+            try {
+                return wrapper.fromEntities(optListEntity.get());
+            } catch (ApplicationCommunicationException e) {
+                throw new ApplicationServiceException(e);
+            }
+        }else{
+            throw new ApplicationServiceException("Organizer not found");
+        }
+    }
+
 
 }

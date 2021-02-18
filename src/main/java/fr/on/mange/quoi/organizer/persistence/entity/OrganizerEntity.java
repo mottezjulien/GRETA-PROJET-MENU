@@ -17,6 +17,7 @@ public class OrganizerEntity {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
+    @Column(name = "user_id")
     private String userId;
 
     private String label;

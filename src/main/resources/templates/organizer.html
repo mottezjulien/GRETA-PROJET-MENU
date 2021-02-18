@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       lang="fr">
 <head>
     <meta charset="utf-8">
@@ -205,6 +206,20 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <div class="container-lg">
+            <table class="table">
+                <thead>
+                <th>Label</th>
+                </thead>
+                <tbody>
+                <tr th:each="orga: ${organizers}">
+                    <td th:text="${orga.label}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
