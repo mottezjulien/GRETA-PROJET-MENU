@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,4 +20,7 @@ public interface OrganizerRepository extends JpaRepository<OrganizerEntity, Stri
     Optional<OrganizerEntity> findByLabel(String label);
 
     Optional<OrganizerEntity> findByUserId(String userId);
+    Optional<List<OrganizerEntity>> findAllByUserId(String userId);
+
+
 }

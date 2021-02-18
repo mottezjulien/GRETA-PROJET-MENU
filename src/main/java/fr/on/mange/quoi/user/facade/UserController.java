@@ -23,6 +23,7 @@ public class UserController{
     @Autowired
     private OrganizerRepository organizerRepository;
 
+
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO){
             User user = service.saveNewUser(wrapper.fromDTO(userDTO));
