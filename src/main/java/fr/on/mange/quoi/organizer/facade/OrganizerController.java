@@ -5,7 +5,6 @@ import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
 import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
 import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
 import fr.on.mange.quoi.organizer.facade.dto.NewOrganizerLabelRequestDTO;
-import fr.on.mange.quoi.organizer.facade.dto.OrganizerDTO;
 import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerDTOWrapper;
 import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerListDTOWrapper;
 import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
@@ -61,12 +60,15 @@ public class OrganizerController {
             } else {
                 modelAndView.addObject("organizer", wrapper.fromModel(organizerService.findByLabel(ORGA_EXAMPLE)));
             }
+
             return modelAndView;
         } catch (ApplicationServiceException | ApplicationCommunicationException e) {
             e.printStackTrace();
             return new ModelAndView("error");
         }
     }
+
+
 
     private boolean isConnected(Authentication auth) {
         return auth.getAuthorities().contains(new SimpleGrantedAuthority(USER_ROLE));
@@ -84,7 +86,8 @@ public class OrganizerController {
         if(isConnected(auth)) {
             try {
                 UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(auth.getName()));
-                organizaterRepository.save(new OrganizerEntity(userIdDTO.getUuid(), label.getLabel()));
+                OrganizerEntity organizerEntity = organizaterRepository.save(new OrganizerEntity(userIdDTO.getUuid(), label.getLabel()));
+                organizerService.initDays(organizerEntity);
             } catch (ApplicationCommunicationException e) {
                 e.printStackTrace();
             }

@@ -1,6 +1,9 @@
 package fr.on.mange.quoi.user.facade;
 
+import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
+import fr.on.mange.quoi.organizer.facade.dto.OrganizerListDTO;
 import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
+import fr.on.mange.quoi.organizer.persistence.repository.DayOrganizerRepository;
 import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
 import fr.on.mange.quoi.user.facade.dto.UserRegistrationDTO;
 import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
@@ -23,11 +26,15 @@ public class UserController{
     @Autowired
     private OrganizerRepository organizerRepository;
 
+    @Autowired
+    private OrganizerService organizerService;
+
 
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO){
             User user = service.saveNewUser(wrapper.fromDTO(userDTO));
-            organizerRepository.save(new OrganizerEntity(user.getOptId().get(),"Test 1"));
+            OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(),"Test 1"));
+            organizerService.initDays(organizerEntity);
             return new ModelAndView("accueil");
     }
 
