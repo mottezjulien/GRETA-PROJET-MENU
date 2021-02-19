@@ -28,8 +28,7 @@ public class UserController{
     public ModelAndView registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO){
             User user = service.saveNewUser(wrapper.fromDTO(userDTO));
             organizerRepository.save(new OrganizerEntity(user.getOptId().get(),"Test 1"));
-
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("accueil");
     }
 
     @GetMapping(value = "/register")

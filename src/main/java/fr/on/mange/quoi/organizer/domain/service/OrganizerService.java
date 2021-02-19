@@ -20,45 +20,17 @@ public class OrganizerService {
     @Autowired
     private OrganizerWrapper wrapper;
 
-    /*public Organizer get(String id) throws ApplicationServiceException {
-        Optional<OrganizerEntity> optEntity = repository.findById(id);
-        if (optEntity.isPresent()) {
-            try {
-                return wrapper.fromEntity(optEntity.get());
-            } catch (ApplicationCommunicationException e) {
-                throw new ApplicationServiceException(e);
-            }
-        }
-        throw new ApplicationServiceException("Organisation with id " + id + " not found");
-    }*/
-
-
-    public Organizer findAny() throws ApplicationServiceException {
-        Optional<OrganizerEntity> optEntity = repository.findAllFetchAll()
-                .stream()
-                .findAny();
-        if (optEntity.isPresent()) {
-            try {
-                return wrapper.fromEntity(optEntity.get());
-            } catch (ApplicationCommunicationException e) {
-                throw new ApplicationServiceException(e);
-            }
-
-        }
-        throw new ApplicationServiceException("Any organisation found");
-    }
-
     public Organizer findByUserId(String userId) throws ApplicationServiceException {
-        Optional<OrganizerEntity> optEntity = repository.findByUserId(userId);
-
-        if(optEntity.isPresent()){
-            try {
-                return wrapper.fromEntity(optEntity.get());
-            } catch (ApplicationCommunicationException e) {
-                throw new ApplicationServiceException(e);
+        List<OrganizerEntity> entities = repository.findAllByUserId(userId);
+        Optional<OrganizerEntity> findFirstOptional = entities.stream().findFirst();
+        try {
+            if(findFirstOptional.isPresent()) {
+                return wrapper.fromEntity(findFirstOptional.get());
             }
+            throw new ApplicationServiceException("Organizer not found");
+        } catch (ApplicationCommunicationException e) {
+            throw new ApplicationServiceException(e);
         }
-        throw new ApplicationServiceException("Organizer not found");
     }
 
     public Organizer findByLabel(String label) throws ApplicationServiceException {
@@ -76,18 +48,10 @@ public class OrganizerService {
 
 
     public List<Organizer> findAllByUserId(String UserId) throws ApplicationServiceException {
-        Optional<List<OrganizerEntity>> optListEntity= repository.findAllByUserId(UserId);
-
-        if(optListEntity.isPresent()){
-            try {
-                return wrapper.fromEntities(optListEntity.get());
-            } catch (ApplicationCommunicationException e) {
-                throw new ApplicationServiceException(e);
-            }
-        }else{
-            throw new ApplicationServiceException("Organizer not found");
+        try {
+            return wrapper.fromEntities(repository.findAllByUserId(UserId));
+        } catch (ApplicationCommunicationException e) {
+            throw new ApplicationServiceException(e);
         }
     }
-
-
 }
