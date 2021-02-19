@@ -64,7 +64,7 @@ public class ChoiceOrganizerController {
             Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectOneCategoriesChoice(entity.get());
             optChoice.ifPresent(choice -> insertCategory(choice, request.getCategoryId()));
         }
-        return new ModelAndView("/organizer");
+        return new ModelAndView("redirect:/organizer");
     }
 
     //TODO:Julien:To delete when POST newChoiceCategories with choiceIdRequestParam

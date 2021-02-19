@@ -16,6 +16,7 @@ public interface OrganizerRepository extends JpaRepository<OrganizerEntity, Stri
             " LEFT JOIN FETCH o.days d" +
             " LEFT JOIN FETCH d.choices c")
     List<OrganizerEntity> findAllFetchAll();
+
     List<OrganizerEntity> findAllByUserId(String userId);
 
     Optional<OrganizerEntity> findByLabel(String label);
