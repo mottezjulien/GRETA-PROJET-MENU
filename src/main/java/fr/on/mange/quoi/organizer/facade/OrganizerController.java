@@ -104,9 +104,13 @@ public class OrganizerController {
     }
 
     @GetMapping("/organizer/supOrganizer")
-    public ModelAndView supOrganizer(@RequestParam("id")String uuid) {
-        OrganizerEntity o = organizaterRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException(uuid+" n'existe pas"));
-        organizaterRepository.delete(o);
+    public ModelAndView supOrganizer(@RequestParam("id")String uuid) throws ApplicationCommunicationException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(auth.getName()));
+        if (!userIdDTO.getOrganizerId().equalsIgnoreCase(uuid)) {
+            OrganizerEntity o = organizaterRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException(uuid+" n'existe pas"));
+            organizaterRepository.delete(o);
+        }
         return new ModelAndView("redirect:/organizer");
     }
 
