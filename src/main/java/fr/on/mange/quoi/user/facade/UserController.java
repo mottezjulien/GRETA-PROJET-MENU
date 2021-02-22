@@ -1,5 +1,6 @@
 package fr.on.mange.quoi.user.facade;
 
+import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
 import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
 import fr.on.mange.quoi.organizer.facade.dto.OrganizerListDTO;
 import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
@@ -31,11 +32,17 @@ public class UserController{
 
 
     @PostMapping(value = "/register")
-    public ModelAndView registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO){
+    public ModelAndView registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO) {
+        try {
             User user = service.saveNewUser(wrapper.fromDTO(userDTO));
-            OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(),"Test 1"));
+            OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(), "Test 1"));
             organizerService.initDays(organizerEntity);
+            service.saveNewDefaultOrganizer(user.getLogin(), organizerEntity.getId());
             return new ModelAndView("accueil");
+        }catch (ApplicationServiceException e){
+            e.printStackTrace();
+            return new ModelAndView("login");
+        }
     }
 
     @GetMapping(value = "/register")

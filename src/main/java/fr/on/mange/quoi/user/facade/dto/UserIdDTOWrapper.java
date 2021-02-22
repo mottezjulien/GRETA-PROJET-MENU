@@ -10,7 +10,7 @@ import java.util.Optional;
 public class UserIdDTOWrapper {
     public UserIdDTO fromEntity(Optional<UserEntity> entity) throws ApplicationCommunicationException {
         if(entity.isPresent()){
-            return new UserIdDTO(entity.get().getId());
+            return new UserIdDTO(entity.get().getId(),entity.get().getDefaultOrganizerId());
         }
         throw new ApplicationCommunicationException("User not found");
 

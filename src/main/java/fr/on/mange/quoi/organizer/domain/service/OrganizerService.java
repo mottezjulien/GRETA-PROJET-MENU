@@ -122,4 +122,15 @@ public class OrganizerService {
     }
 
 
+    public Organizer findById(String organizerId) throws ApplicationServiceException {
+        Optional<OrganizerEntity> optEntity = repository.findById(organizerId);
+        if(optEntity.isPresent()){
+            try {
+                return wrapper.fromEntity(optEntity.get());
+            } catch (ApplicationCommunicationException e) {
+                throw new ApplicationServiceException(e);
+            }
+        }
+        throw new ApplicationServiceException("Organizer not found");
+    }
 }

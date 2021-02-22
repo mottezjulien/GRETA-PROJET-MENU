@@ -11,17 +11,18 @@ import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
 import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
 import fr.on.mange.quoi.user.facade.dto.UserIdDTO;
 import fr.on.mange.quoi.user.facade.dto.UserIdDTOWrapper;
+import fr.on.mange.quoi.user.model.service.UserService;
+import fr.on.mange.quoi.user.persistance.UserEntity;
 import fr.on.mange.quoi.user.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Controller
 public class OrganizerController {
@@ -47,6 +48,9 @@ public class OrganizerController {
     @Autowired
     private OrganizerRepository organizaterRepository;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/organizer")
     public ModelAndView home() {
         try {
@@ -56,7 +60,7 @@ public class OrganizerController {
             if(isConnected(auth)) {
                 UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(auth.getName()));
                 modelAndView.addObject("organizers", listDTOWrapper.fromModels(organizerService.findAllByUserId(userIdDTO.getUuid())));
-                modelAndView.addObject("organizer", wrapper.fromModel(organizerService.findByUserId(userIdDTO.getUuid())));
+                modelAndView.addObject("organizer", wrapper.fromModel(organizerService.findById(userIdDTO.getOrganizerId())));
             } else {
                 modelAndView.addObject("organizer", wrapper.fromModel(organizerService.findByLabel(ORGA_EXAMPLE)));
             }
@@ -66,6 +70,21 @@ public class OrganizerController {
             e.printStackTrace();
             return new ModelAndView("error");
         }
+    }
+
+    @GetMapping("/organizer/{organizerId}")
+    public ModelAndView setDefaultOrganizer(@PathVariable String organizerId) throws ApplicationCommunicationException {
+        Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+        if(isConnected(auth)){
+            try {
+                userService.saveNewDefaultOrganizer(auth.getName(), organizerId);
+                return new ModelAndView("redirect:/organizer");
+            } catch (ApplicationServiceException e) {
+            e.printStackTrace();
+        }
+            throw new ApplicationCommunicationException("User not found");
+        }
+        throw new ApplicationCommunicationException("User not connected");
     }
 
 

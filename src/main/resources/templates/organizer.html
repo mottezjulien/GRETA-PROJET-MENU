@@ -244,10 +244,12 @@
             <table class="table">
                 <thead>
                 <th>Label</th>
+                <th>Sélectionner</th>
                 </thead>
                 <tbody>
                 <tr th:each="orga: ${organizers}">
                     <td th:text="${orga.label}"></td>
+                    <td><a th:href="'organizer/' + ${orga.uuid}"><button type="submit" class="btn btn-primary">Sélectionner</button></a></td>
                 </tr>
                 </tbody>
             </table>
