@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
@@ -97,8 +98,9 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Editer</button>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/editCategories?id=' + ${organizer.monday.id}">Editer</a>
                                     <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${organizer.monday.id}">Add catégorie</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${organizer.monday.id}">Sup</a>
                                 </div>
                             </div>
                         </div>
@@ -116,8 +118,9 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Editer</button>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/editCategories?id=' + ${organizer.tuesday.id}">Editer</a>
                                     <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${organizer.tuesday.id}">Add catégorie</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${organizer.tuesday.id}">Sup</a>
                                 </div>
                             </div>
                         </div>
@@ -135,8 +138,9 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Editer</button>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/editCategories?id=' + ${organizer.wednesday.id}">Editer</a>
                                     <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${organizer.wednesday.id}">Add catégorie</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${organizer.wednesday.id}">Sup</a>
                                 </div>
                             </div>
                         </div>
@@ -154,8 +158,9 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Editer</button>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/editCategories?id=' + ${organizer.thursday.id}">Editer</a>
                                     <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${organizer.thursday.id}">Add catégorie</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${organizer.thursday.id}">Sup</a>
                                 </div>
                             </div>
                         </div>
@@ -173,8 +178,9 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Editer</button>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/editCategories?id=' + ${organizer.friday.id}">Editer</a>
                                     <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${organizer.friday.id}">Add catégorie</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${organizer.friday.id}">Sup</a>
                                 </div>
                             </div>
                         </div>
@@ -192,8 +198,9 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Editer</button>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/editCategories?id=' + ${organizer.saturday.id}">Editer</a>
                                     <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${organizer.saturday.id}">Add catégorie</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${organizer.saturday.id}">Sup</a>
                                 </div>
                             </div>
                         </div>
@@ -211,8 +218,9 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Editer</button>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/editCategories?id=' + ${organizer.sunday.id}">Editer</a>
                                     <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${organizer.sunday.id}">Add catégorie</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${organizer.sunday.id}">Sup</a>
                                 </div>
                             </div>
                         </div>
@@ -244,10 +252,15 @@
             <table class="table">
                 <thead>
                 <th>Label</th>
+                <th>Sélectionner</th>
                 </thead>
                 <tbody>
                 <tr th:each="orga: ${organizers}">
                     <td th:text="${orga.label}"></td>
+                    <td>
+                        <a th:href="'organizer/' + ${orga.uuid}"><button type="submit" class="btn btn-primary">Sélectionner</button></a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/organizer/supOrganizer?id=' + ${orga.uuid}">Sup</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

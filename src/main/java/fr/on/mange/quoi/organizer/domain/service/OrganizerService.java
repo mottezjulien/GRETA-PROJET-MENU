@@ -96,7 +96,6 @@ public class OrganizerService {
 
     public Organizer findByLabel(String label) throws ApplicationServiceException {
         Optional<OrganizerEntity> optEntity = repository.findByLabel(label);
-
         if(optEntity.isPresent()){
             try {
                 return wrapper.fromEntity(optEntity.get());
@@ -128,7 +127,6 @@ public class OrganizerService {
         RecipeCategoriesChoiceOrganizerEntity choice = new RecipeCategoriesChoiceOrganizerEntity();
         choice.setDay(entity);
         choice.setMeal(MealOrganizer.ANYONE);
-
         choiceRepository.save(choice);
     }
 
@@ -181,5 +179,17 @@ public class OrganizerService {
 
     private boolean isConnected(Authentication auth) {
         return auth.getAuthorities().contains(new SimpleGrantedAuthority(USER_ROLE));
+    }
+  
+    public Organizer findById(String organizerId) throws ApplicationServiceException {
+        Optional<OrganizerEntity> optEntity = repository.findById(organizerId);
+        if(optEntity.isPresent()){
+            try {
+                return wrapper.fromEntity(optEntity.get());
+            } catch (ApplicationCommunicationException e) {
+                throw new ApplicationServiceException(e);
+            }
+        }
+        throw new ApplicationServiceException("Organizer not found");
     }
 }
