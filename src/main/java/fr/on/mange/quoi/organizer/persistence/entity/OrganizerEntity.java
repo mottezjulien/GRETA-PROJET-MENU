@@ -1,13 +1,9 @@
 package fr.on.mange.quoi.organizer.persistence.entity;
 
-import fr.on.mange.quoi.organizer.persistence.repository.DayOrganizerRepository;
-import fr.on.mange.quoi.user.persistance.UserEntity;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -66,4 +62,5 @@ public class OrganizerEntity {
     public void setDays(Set<DayOrganizerEntity> days) {
         this.days = days;
     }
+
 }

@@ -16,13 +16,24 @@ public class DayOrganizer {
 
     private Day day;
 
-    private Map<MealOrganizer, ChoiceOrganizer> choiceByType;
+    private Map<MealOrganizer, ChoiceOrganizer> choiceByType = new HashMap<>();
+
+    private Organizer organizer;
+
+    private java.time.DayOfWeek dayType;
 
     public DayOrganizer(Optional<String> optId, Day day, Map<MealOrganizer, ChoiceOrganizer> choiceByType) {
         this.optId = optId;
         this.day = day;
         this.choiceByType = choiceByType;
+
     }
+
+    public DayOrganizer(Organizer organizer, java.time.DayOfWeek dayType) {
+        this.organizer = organizer;
+        this.dayType = dayType;
+    }
+
 
     public boolean isSameDay(java.time.DayOfWeek dayOfWeek) {
         return day instanceof DayOfWeek
@@ -40,6 +51,12 @@ public class DayOrganizer {
     public Optional<String> getOptId() {
         return optId;
     }
+
+    public void put(MealOrganizer meal, ChoiceOrganizer choice) {
+        choiceByType.put(meal, choice);
+    }
+
+
 
 
 }

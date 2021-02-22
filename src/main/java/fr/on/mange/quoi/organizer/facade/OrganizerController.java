@@ -3,7 +3,9 @@ package fr.on.mange.quoi.organizer.facade;
 
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
 import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
+import fr.on.mange.quoi.organizer.domain.model.choice.*;
 import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
+import fr.on.mange.quoi.organizer.facade.dto.ChoiceOrganizerTemplateDTO;
 import fr.on.mange.quoi.organizer.facade.dto.NewOrganizerLabelRequestDTO;
 import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerDTOWrapper;
 import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerListDTOWrapper;
@@ -23,6 +25,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
@@ -35,6 +38,7 @@ public class OrganizerController {
 
     private static final String USER_ROLE = "USER";
     private static final String ORGA_EXAMPLE = "Organisateur d'exemple";
+
 
     @Autowired
     private UserIdDTOWrapper userIdDTOWrapper;
@@ -52,7 +56,10 @@ public class OrganizerController {
     private UserRepository userRepository;
 
     @Autowired
-    private OrganizerRepository organizaterRepository;
+    private OrganizerRepository organizerRepository;
+
+
+
 
     @Autowired
     private UserService userService;
@@ -68,7 +75,7 @@ public class OrganizerController {
         try {
             ModelAndView modelAndView = new ModelAndView("organizer");
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if(isConnected(auth)) {
+            if (isConnected(auth)) {
                 UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(auth.getName()));
                 modelAndView.addObject("organizers", listDTOWrapper.fromModels(organizerService.findAllByUserId(userIdDTO.getUuid())));
                 modelAndView.addObject("organizer", wrapper.fromModel(organizerService.findById(userIdDTO.getOrganizerId())));
@@ -114,7 +121,6 @@ public class OrganizerController {
         return new ModelAndView("redirect:/organizer");
     }
 
-
     @GetMapping("/organizer/new")
     public ModelAndView newOrganizerForUser() {
         ModelAndView modelAndView = new ModelAndView("addOrganizer");
@@ -124,15 +130,29 @@ public class OrganizerController {
     @PostMapping("/organizer/new")
     public ModelAndView saveNewOrganizerForUser(@ModelAttribute("request") NewOrganizerLabelRequestDTO label) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(isConnected(auth)) {
+        if (isConnected(auth)) {
             try {
                 UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(auth.getName()));
-                OrganizerEntity organizerEntity = organizaterRepository.save(new OrganizerEntity(userIdDTO.getUuid(), label.getLabel()));
+                OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(userIdDTO.getUuid(), label.getLabel()));
                 organizerService.initDays(organizerEntity);
             } catch (ApplicationCommunicationException e) {
                 e.printStackTrace();
             }
         }
-    return new ModelAndView("redirect:/organizer");
+        return new ModelAndView("redirect:/organizer");
+    }
+
+    @PostMapping("/organizer/new/template")
+    public ModelAndView saveNewOrganizerForUserWithTemplate(@ModelAttribute("request") ChoiceOrganizerTemplateDTO choiceOrganizerTemplateDTO) {
+        try {
+            organizerService.createFromTemplate(choiceOrganizerTemplateDTO);
+        } catch (ApplicationCommunicationException e) {
+            e.printStackTrace();
+        }
+        return new ModelAndView("redirect:/organizer");
+    }
+
+    private boolean isConnected(Authentication auth) {
+        return auth.getAuthorities().contains(new SimpleGrantedAuthority(USER_ROLE));
     }
 }

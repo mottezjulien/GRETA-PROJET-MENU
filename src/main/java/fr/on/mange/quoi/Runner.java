@@ -85,6 +85,18 @@ public class Runner {
         yaourt.setLabel("Yaourt");
         recipeCategoryRepository.save(yaourt);
 
+        RecipeCategoryEntity chocolat = new RecipeCategoryEntity();
+        chocolat.setLabel("Chocolat");
+        recipeCategoryRepository.save(chocolat);
+
+        RecipeCategoryEntity cereales = new RecipeCategoryEntity();
+        cereales.setLabel("Céréales");
+        recipeCategoryRepository.save(cereales);
+
+        RecipeCategoryEntity coffee = new RecipeCategoryEntity();
+        coffee.setLabel("Café");
+        recipeCategoryRepository.save(coffee);
+
         OrganizerEntity organizer = new OrganizerEntity();
         organizer.setLabel("Organisateur d'exemple");
         organizerRepository.save(organizer);
@@ -145,7 +157,7 @@ public class Runner {
 
         RecipeCategoriesChoiceOrganizerEntity yaourtNoMatter = new RecipeCategoriesChoiceOrganizerEntity();
         yaourtNoMatter.setDay(noMatter);
-        yaourtNoMatter.getRecipeCategoryIds().add(yaourt.getId());
+        yaourtNoMatter.getRecipeCategoryIds().add(coffee.getId());
         choiceOrganizerRepository.save(yaourtNoMatter);
     }
 

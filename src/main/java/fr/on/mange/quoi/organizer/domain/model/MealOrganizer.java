@@ -9,13 +9,13 @@ public enum MealOrganizer {
             case BREAK_FAST:
                 return "Petit déjeuner";
             case LUNCH:
-                return "Diner";
+                return "Déjeuner";
             case SNACK:
                 return "Gouter";
             case APERITIF:
                 return "Apéro";
             case SUPPER:
-                return "Souper";
+                return "Diner";
             default:
                 return "";
         }
