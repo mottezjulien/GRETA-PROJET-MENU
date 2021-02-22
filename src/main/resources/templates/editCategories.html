@@ -1,0 +1,81 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text-white">A propos</h4>
+                    <p class="text-muted">Bienvenue dans la nouvelle application de construction de menu pour
+                        famille.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>On mange quoi ?</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main role="main">
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Organisateur de Menu</h1>
+            <h2 class="h2">Choix de catégories</h2>
+            <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
+                etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+            <p>
+                <a href="#" class="btn btn-primary my-2">Main call to action</a>
+                <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+            </p>-->
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <p class="card-text" th:each="meal: ${dayCategories.meals}">
+                <strong th:text="${meal.typeLabel}"/>
+                <span th:text="${meal.choiceLabel}"/>
+            </p>
+            <form class="form" name="request" action="/editCategories" method="post">
+                <input type="hidden" th:value="${dayId}" name="dayId"/>
+                <select class="form-select form-select-sm" name="categoryId">
+                <option selected>Séléctionner une catégorie</option>
+                <option th:each="category : ${allCategories}"
+                        th:value="${category.id}"
+                        th:text="${category.label}" />
+            </select>
+            <button class="btn btn-sm btn-outline-secondary" type="submit">Valider</button>
+        </form>
+        </div>
+    </div>
+
+</main>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<script src="js/jquery-3.5.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/holder.min.js"></script>
+
+</body>
+</html>

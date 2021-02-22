@@ -7,7 +7,6 @@ public class AddCategoryDTORequest {
 
     private String categoryId;
 
-
     public String getDayId() {
         return dayId;
     }

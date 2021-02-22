@@ -78,7 +78,6 @@ public class OrganizerService {
 
     public Organizer findByLabel(String label) throws ApplicationServiceException {
         Optional<OrganizerEntity> optEntity = repository.findByLabel(label);
-
         if(optEntity.isPresent()){
             try {
                 return wrapper.fromEntity(optEntity.get());
@@ -110,7 +109,6 @@ public class OrganizerService {
         RecipeCategoriesChoiceOrganizerEntity choice = new RecipeCategoriesChoiceOrganizerEntity();
         choice.setDay(entity);
         choice.setMeal(MealOrganizer.ANYONE);
-
         choiceRepository.save(choice);
     }
 

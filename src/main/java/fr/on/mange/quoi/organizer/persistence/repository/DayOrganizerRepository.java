@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
@@ -17,5 +18,6 @@ public interface DayOrganizerRepository extends JpaRepository<DayOrganizerEntity
             " LEFT JOIN FETCH d.choices c" +
             " WHERE d.id = :dayId")
     Optional<DayOrganizerEntity> findByIdFetchAll(String dayId);
+
 
 }
