@@ -23,6 +23,13 @@ public class DayOrganizerWrapper {
         return new DayOrganizer(Optional.of(entity.getId()), day(entity.getDayType()), choicesByMeal(entity.getChoices()));
     }
 
+    public DayOrganizer fromEntityWithDay(DayOrganizerEntity entity) throws ApplicationCommunicationException {
+        DayOrganizer dayOrganizer = new DayOrganizer(Optional.of(entity.getId()), day(entity.getDayType()), choicesByMeal(entity.getChoices()));
+        dayOrganizer.setDayValue(String.valueOf(entity.getDayType()));
+
+        return  dayOrganizer;
+    }
+
     private Day day(DayTypeOrganizerEntity entity) {
         switch (entity) {
             case MONDAY:

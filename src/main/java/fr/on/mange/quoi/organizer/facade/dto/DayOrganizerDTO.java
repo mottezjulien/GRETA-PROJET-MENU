@@ -7,6 +7,16 @@ public class DayOrganizerDTO {
 
     private String id;
 
+    private String day;
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
     private List<MealOrganizerDTO> meals = new ArrayList<>();
 
     public List<MealOrganizerDTO> getMeals() {

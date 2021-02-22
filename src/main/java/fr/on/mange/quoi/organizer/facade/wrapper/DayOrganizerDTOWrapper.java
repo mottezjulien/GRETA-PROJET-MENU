@@ -18,6 +18,7 @@ public class DayOrganizerDTOWrapper {
     public DayOrganizerDTO fromModel(DayOrganizer model) {
         DayOrganizerDTO dto = new DayOrganizerDTO();
         dto.setId(model.getOptId().get());
+        dto.setDay(model.getDayValue());
         Map<MealOrganizer, ChoiceOrganizer> choiceByType = model.choiceByType();
         List<MealOrganizer> orderKey = mealsOrderByType(choiceByType);
         for (MealOrganizer type : orderKey) {
