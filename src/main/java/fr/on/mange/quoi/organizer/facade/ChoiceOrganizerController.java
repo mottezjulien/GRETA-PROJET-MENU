@@ -88,6 +88,17 @@ public class ChoiceOrganizerController {
         }
         return new ModelAndView("redirect:/organizer");
     }
+    @GetMapping("/supCategories")
+    public ModelAndView supCategories(@RequestParam("id") String dayId) {
+        Optional<DayOrganizerEntity> entity = dayRepository.findByIdFetchAll(dayId);
+        if (entity.isPresent()) {
+            Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectOneCategoriesChoice(entity.get());
+            optChoice.ifPresent(choice -> deleteCategory(choice, dayId));
+        }
+        return new ModelAndView("redirect:/organizer");
+    }
+
+
 
     //TODO:Julien:To delete when POST newChoiceCategories with choiceIdRequestParam
     private Optional<RecipeCategoriesChoiceOrganizerEntity> selectOneCategoriesChoice(DayOrganizerEntity entity) {
@@ -107,8 +118,15 @@ public class ChoiceOrganizerController {
     }
 
     private void updateCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
+       if (!choice.getRecipeCategoryIds().isEmpty()) {
+           choice.getRecipeCategoryIds().clear();
+           choice.getRecipeCategoryIds().add(categoryId);
+           repository.save(choice);
+       }
+    }
+
+    private void deleteCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
         choice.getRecipeCategoryIds().clear();
-        choice.getRecipeCategoryIds().add(categoryId);
         repository.save(choice);
     }
 
