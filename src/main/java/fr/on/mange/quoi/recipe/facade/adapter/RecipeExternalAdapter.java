@@ -12,4 +12,6 @@ public interface RecipeExternalAdapter {
     Optional<IdLabelDTO> findCategoryById(String categoryId);
 
     List<IdLabelDTO> findAllCategories();
+
+    Optional<IdLabelDTO>  findByLabel(String label);
 }

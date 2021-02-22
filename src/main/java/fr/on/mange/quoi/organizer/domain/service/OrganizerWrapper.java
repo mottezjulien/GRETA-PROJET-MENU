@@ -1,6 +1,7 @@
 package fr.on.mange.quoi.organizer.domain.service;
 
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
+import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.Organizer;
 import fr.on.mange.quoi.organizer.persistence.entity.DayOrganizerEntity;
 import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
@@ -26,6 +27,14 @@ public class OrganizerWrapper {
             model.insert(dayWrapper.fromEntity(day));
         }
         return model;
+    }
+
+    public OrganizerEntity toEntity(Organizer model) throws ApplicationCommunicationException {
+        OrganizerEntity entity = new OrganizerEntity();
+        entity.setUserId(model.getOptUserId().get());
+        entity.setLabel(model.getLabel());
+        entity.setUserId(model.getOptUserId().get());
+        return entity;
     }
 
     public List<Organizer> fromEntities(List<OrganizerEntity> listEntity) throws ApplicationCommunicationException {

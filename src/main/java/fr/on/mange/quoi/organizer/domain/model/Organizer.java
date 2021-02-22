@@ -14,6 +14,7 @@ public class Organizer {
 
     private Optional<String> optUserId = Optional.empty();
 
+
     public Optional<String> getOptId() {
         return optId;
     }
@@ -53,4 +54,5 @@ public class Organizer {
     public void setOptUserId(Optional<String> optUserId) {
         this.optUserId = optUserId;
     }
+
 }

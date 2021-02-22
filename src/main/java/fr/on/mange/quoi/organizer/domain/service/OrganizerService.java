@@ -2,26 +2,35 @@ package fr.on.mange.quoi.organizer.domain.service;
 
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
 import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
-import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.Organizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoryChoiceOrganizer;
+import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizerTemplateFactory;
+import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizerTemplateFamilyFactory;
+import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizerTemplateStudentFactory;
+import fr.on.mange.quoi.organizer.facade.dto.ChoiceOrganizerTemplateDTO;
 import fr.on.mange.quoi.organizer.persistence.entity.*;
 import fr.on.mange.quoi.organizer.persistence.repository.ChoiceOrganizerRepository;
 import fr.on.mange.quoi.organizer.persistence.repository.DayOrganizerRepository;
 import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
+import fr.on.mange.quoi.user.facade.dto.UserIdDTO;
+import fr.on.mange.quoi.user.facade.dto.UserIdDTOWrapper;
+import fr.on.mange.quoi.user.persistance.UserEntity;
+import fr.on.mange.quoi.user.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class OrganizerService {
-    @Autowired
-    private DayOrganizerRepository dayOrganizerRepository;
+
+    private static final String ORGA_STUDENT = "student";
+    private static final String USER_ROLE = "USER";
+
 
     @Autowired
     private OrganizerRepository repository;
@@ -34,6 +43,15 @@ public class OrganizerService {
 
     @Autowired
     private ChoiceOrganizerRepository choiceRepository;
+
+    @Autowired
+    private ChoiceOrganizerTemplateFamilyFactory familyFactory;
+
+    @Autowired
+    private ChoiceOrganizerTemplateStudentFactory studentFactory;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /*public Organizer get(String id) throws ApplicationServiceException {
         Optional<OrganizerEntity> optEntity = repository.findById(id);
@@ -121,5 +139,47 @@ public class OrganizerService {
         return dayOrganizerEntity;
     }
 
+    public void createFromTemplate(ChoiceOrganizerTemplateDTO choiceOrganizerTemplateDTO) throws ApplicationCommunicationException {
+        ChoiceOrganizerTemplateFactory factory = findFactory(choiceOrganizerTemplateDTO);
+        Organizer organizer = factory.build();
+        try {
+            organizer.setOptUserId(findUserId());
+            saveAll(organizer);
+        } catch (ApplicationServiceException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private Optional<String> findUserId() throws ApplicationServiceException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (isConnected(auth)) {
+            Optional<UserEntity> userEntity = userRepository.findByLogin(auth.getName());
+            if(userEntity.isPresent()){
+                return Optional.of(userEntity.get().getId());
+            }
+            throw new ApplicationServiceException("User not found");
+
+        }
+        throw new ApplicationServiceException("User not connected");
+    }
+
+    private ChoiceOrganizerTemplateFactory findFactory(ChoiceOrganizerTemplateDTO choiceOrganizerTemplateDTO) {
+        if (choiceOrganizerTemplateDTO.getLabel().equals(ORGA_STUDENT)) {
+            return studentFactory;
+        }
+        return familyFactory;
+    }
+
+    private void saveAll(Organizer organizer) {
+        try {
+            repository.save(wrapper.toEntity(organizer));
+
+        } catch (ApplicationCommunicationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isConnected(Authentication auth) {
+        return auth.getAuthorities().contains(new SimpleGrantedAuthority(USER_ROLE));
+    }
 }
