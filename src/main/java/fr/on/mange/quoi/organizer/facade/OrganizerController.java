@@ -7,7 +7,10 @@ import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
 import fr.on.mange.quoi.organizer.facade.dto.NewOrganizerLabelRequestDTO;
 import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerDTOWrapper;
 import fr.on.mange.quoi.organizer.facade.wrapper.OrganizerListDTOWrapper;
+import fr.on.mange.quoi.organizer.persistence.entity.DayOrganizerEntity;
 import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
+import fr.on.mange.quoi.organizer.persistence.repository.ChoiceOrganizerRepository;
+import fr.on.mange.quoi.organizer.persistence.repository.DayOrganizerRepository;
 import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
 import fr.on.mange.quoi.user.facade.dto.UserIdDTO;
 import fr.on.mange.quoi.user.facade.dto.UserIdDTOWrapper;
@@ -23,6 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
+
+import java.lang.management.OperatingSystemMXBean;
+import java.util.List;
 
 @Controller
 public class OrganizerController {
@@ -51,11 +57,16 @@ public class OrganizerController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DayOrganizerRepository dayOrganizerRepository;
+
+    @Autowired
+    private ChoiceOrganizerRepository choiceOrganizerRepository;
+
     @GetMapping("/organizer")
     public ModelAndView home() {
         try {
             ModelAndView modelAndView = new ModelAndView("organizer");
-
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if(isConnected(auth)) {
                 UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(auth.getName()));
@@ -64,7 +75,6 @@ public class OrganizerController {
             } else {
                 modelAndView.addObject("organizer", wrapper.fromModel(organizerService.findByLabel(ORGA_EXAMPLE)));
             }
-
             return modelAndView;
         } catch (ApplicationServiceException | ApplicationCommunicationException e) {
             e.printStackTrace();
@@ -92,6 +102,14 @@ public class OrganizerController {
     private boolean isConnected(Authentication auth) {
         return auth.getAuthorities().contains(new SimpleGrantedAuthority(USER_ROLE));
     }
+
+    @GetMapping("/organizer/supOrganizer")
+    public ModelAndView supOrganizer(@RequestParam("id")String uuid) {
+        OrganizerEntity o = organizaterRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException(uuid+" n'existe pas"));
+        organizaterRepository.delete(o);
+        return new ModelAndView("redirect:/organizer");
+    }
+
 
     @GetMapping("/organizer/new")
     public ModelAndView newOrganizerForUser() {

@@ -25,7 +25,6 @@ public class Runner {
         SpringApplication.run(Runner.class, args);
     }
 
-
     @Autowired
     private RecipeCategoryRepository recipeCategoryRepository;
 
@@ -93,7 +92,6 @@ public class Runner {
 
         createOrgaDayWithCategoryChoice(organizer, DayTypeOrganizerEntity.MONDAY, gratin);
         createOrgaDayWithCategoryChoice(organizer, DayTypeOrganizerEntity.TUESDAY, tartePizzaCake);
-
 
         DayOrganizerEntity wednesday = createOrgaDay(organizer, DayTypeOrganizerEntity.WEDNESDAY);
 

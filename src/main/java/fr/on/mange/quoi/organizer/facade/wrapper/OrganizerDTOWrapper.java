@@ -25,7 +25,6 @@ public class OrganizerDTOWrapper {
         OrganizerDTO dto = new OrganizerDTO();
         dto.setLabel(model.getLabel());
         dto.setUserId(model.getOptUserId().get());
-
         dto.setMonday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.MONDAY));
         dto.setTuesday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.TUESDAY));
         dto.setWednesday(findOrCreateByDayOfWeek(model.days(), DayOfWeek.WEDNESDAY));

@@ -24,7 +24,7 @@ public class OrganizerEntity {
 
     private String label;
 
-    @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<DayOrganizerEntity> days = new HashSet<>();
 
     public OrganizerEntity() {
