@@ -25,6 +25,8 @@ public class UserEntity {
 
     private String password;
 
+    private String defaultOrganizerId;
+
     public String getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDefaultOrganizerId() {
+        return defaultOrganizerId;
+    }
+
+    public void setDefaultOrganizerId(String defaultOrganizerId) {
+        this.defaultOrganizerId = defaultOrganizerId;
     }
 }
