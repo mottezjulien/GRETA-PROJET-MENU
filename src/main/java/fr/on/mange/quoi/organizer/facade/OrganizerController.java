@@ -115,8 +115,8 @@ public class OrganizerController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserIdDTO userIdDTO = userIdDTOWrapper.fromEntity(userRepository.findByLogin(auth.getName()));
         if (!userIdDTO.getOrganizerId().equalsIgnoreCase(uuid)) {
-            OrganizerEntity o = organizaterRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException(uuid+" n'existe pas"));
-            organizaterRepository.delete(o);
+            OrganizerEntity o = organizerRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException(uuid+" n'existe pas"));
+            organizerRepository.delete(o);
         }
         return new ModelAndView("redirect:/organizer");
     }
@@ -152,7 +152,4 @@ public class OrganizerController {
         return new ModelAndView("redirect:/organizer");
     }
 
-    private boolean isConnected(Authentication auth) {
-        return auth.getAuthorities().contains(new SimpleGrantedAuthority(USER_ROLE));
-    }
 }

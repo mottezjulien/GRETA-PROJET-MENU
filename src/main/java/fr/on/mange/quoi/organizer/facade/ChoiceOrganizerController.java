@@ -3,9 +3,6 @@ package fr.on.mange.quoi.organizer.facade;
 
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoriesChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoryChoiceOrganizer;
 import fr.on.mange.quoi.organizer.domain.service.ChoiceOrganizerWrapper;
 import fr.on.mange.quoi.organizer.domain.service.DayOrganizerWrapper;
 import fr.on.mange.quoi.organizer.facade.dto.DayOrganizerDTO;
@@ -50,10 +47,13 @@ public class ChoiceOrganizerController {
 
 
     @GetMapping("/addCategories")
-    public ModelAndView addCategories(@RequestParam("id") String dayId) {
+    public ModelAndView addCategories(@RequestParam("id") String id) throws ApplicationCommunicationException {
         ModelAndView modelAndView = new ModelAndView("addCategories");
         modelAndView.addObject("allCategories", recipeAdapter.findAllCategories());
-        modelAndView.addObject("dayId", dayId);
+        DayOrganizerEntity dayOrganizerEntity = dayRepository.findByIdFetchAll(id).get();
+        DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
+        DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
+        modelAndView.addObject("dayCategories", dayOrganizerDTO );
         return modelAndView;
     }
 
@@ -64,18 +64,17 @@ public class ChoiceOrganizerController {
             Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectOneCategoriesChoice(entity.get());
             optChoice.ifPresent(choice -> insertCategory(choice, request.getCategoryId()));
         }
-        return new ModelAndView("redirect:/organizer");
+        return new ModelAndView("redirect:/editCategories?id="+request.getDayId());
     }
 
     @GetMapping("/editCategories")
     public ModelAndView editCategories(@RequestParam("id") String dayId) throws ApplicationCommunicationException {
         ModelAndView modelAndView = new ModelAndView("editCategories");
         DayOrganizerEntity dayOrganizerEntity = dayRepository.findByIdFetchAll(dayId).get();
-        DayOrganizer dayOrganizer = dayWrapper.fromEntity(dayOrganizerEntity);
+        DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
         DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
         modelAndView.addObject("dayCategories", dayOrganizerDTO );
-        modelAndView.addObject("allCategories", recipeAdapter.findAllCategories());
-        modelAndView.addObject("dayId", dayId);
+      //  modelAndView.addObject("allCategories", recipeAdapter.findAllCategories());
         return modelAndView;
     }
 
@@ -95,7 +94,7 @@ public class ChoiceOrganizerController {
             Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectOneCategoriesChoice(entity.get());
             optChoice.ifPresent(choice -> deleteCategory(choice, dayId));
         }
-        return new ModelAndView("redirect:/organizer");
+        return new ModelAndView("redirect:/editCategories?id="+dayId);
     }
 
 
