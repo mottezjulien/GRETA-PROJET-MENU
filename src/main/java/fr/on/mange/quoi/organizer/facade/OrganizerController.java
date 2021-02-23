@@ -59,8 +59,6 @@ public class OrganizerController {
     private OrganizerRepository organizerRepository;
 
 
-
-
     @Autowired
     private UserService userService;
 

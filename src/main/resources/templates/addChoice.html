@@ -95,17 +95,15 @@
                                 <strong th:text="${meal.typeLabel}"/>
                                 <span th:text="${meal.choiceLabel}"/>
                                 <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${dayCategories.id + '&typeLabel=' + meal.typeLabel}">[+]</a>
-                                <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${dayCategories.id + '&typeLabel=' + meal.typeLabel}">Sup</a>
-                                </span>
+                                    </span>
                             </p>
                             <div class="container">
-                                <form class="form" name="request" action="/addCategories" method="post">
+                                <form class="form" name="request" action="/addChoice" method="post">
                                     <input type="hidden" th:value="${dayCategories.id}" name="dayId"/>
-                                    <input type="hidden" th:value="${typeLabel}" name="typeLabel"/>
-                                    <select class="form-select form-select-sm" name="categoryId">
-                                        <option th:each="category : ${allCategories}"
-                                                th:value="${category.id}"
-                                                th:text="${category.label}" />
+                                    <select class="form-select form-select-sm" name="listChoice">
+                                        <option th:each="choice : ${listChoice}"
+                                                th:value="${choice}"
+                                                th:text="${choice.labelFr}" />
                                     </select>
                                     <button class="btn btn-sm btn-outline-secondary" type="submit">Valider</button>
                                 </form>
