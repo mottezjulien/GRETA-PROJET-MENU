@@ -22,7 +22,7 @@ public class DayOrganizer {
 
     private java.time.DayOfWeek dayType;
 
-    private String dayValue;
+    /*private String dayValue;
 
     public String getDayValue() {
         return dayValue;
@@ -30,7 +30,7 @@ public class DayOrganizer {
 
     public void setDayValue(String dayValue) {
         this.dayValue = dayValue;
-    }
+    }*/
 
     public DayOrganizer(Optional<String> optId, Day day, Map<MealOrganizer, ChoiceOrganizer> choiceByType) {
         this.optId = optId;
@@ -52,6 +52,13 @@ public class DayOrganizer {
 
     public boolean isNoMatterDay() {
         return day instanceof DayNoMatter;
+    }
+
+    public String strDay() {
+        if(isNoMatterDay()) {
+            return "";
+        }
+        return ((DayOfWeek) day).toJavaTime().toString();
     }
 
     public Map<MealOrganizer, ChoiceOrganizer> choiceByType() {

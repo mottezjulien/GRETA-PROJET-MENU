@@ -24,9 +24,9 @@ public class DayOrganizerWrapper {
     }
 
     public DayOrganizer fromEntityWithDay(DayOrganizerEntity entity) throws ApplicationCommunicationException {
-        DayOrganizer dayOrganizer = new DayOrganizer(Optional.of(entity.getId()), day(entity.getDayType()), choicesByMeal(entity.getChoices()));
-        dayOrganizer.setDayValue(String.valueOf(entity.getDayType()));
-
+        Day day = day(entity.getDayType());
+        DayOrganizer dayOrganizer = new DayOrganizer(Optional.of(entity.getId()), day, choicesByMeal(entity.getChoices()));
+        //dayOrganizer.setDayValue(String.valueOf(entity.getDayType()));
         return  dayOrganizer;
     }
 
