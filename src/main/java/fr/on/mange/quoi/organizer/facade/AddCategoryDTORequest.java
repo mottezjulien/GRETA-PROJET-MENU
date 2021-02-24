@@ -7,6 +7,16 @@ public class AddCategoryDTORequest {
 
     private String categoryId;
 
+    private String typeLabel;
+
+    public String getTypeLabel() {
+        return typeLabel;
+    }
+
+    public void setTypeLabel(String typeLabel) {
+        this.typeLabel = typeLabel;
+    }
+
     public String getDayId() {
         return dayId;
     }

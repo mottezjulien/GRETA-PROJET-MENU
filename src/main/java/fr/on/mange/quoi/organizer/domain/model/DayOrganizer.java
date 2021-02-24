@@ -18,6 +18,11 @@ public class DayOrganizer {
 
     private Map<MealOrganizer, ChoiceOrganizer> choiceByType = new HashMap<>();
 
+    private Organizer organizer;
+
+    private java.time.DayOfWeek dayType;
+
+
     public DayOrganizer(Optional<String> optId, Day day, Map<MealOrganizer, ChoiceOrganizer> choiceByType) {
         this.optId = optId;
         this.day = day;
@@ -42,8 +47,8 @@ public class DayOrganizer {
     }
 
     public String strDay() {
-        if(isNoMatterDay()) {
-            return "";
+        if (isNoMatterDay()) {
+            return "No Matter";
         }
         return ((DayOfWeekModel) day).toJavaTime().toString();
     }

@@ -91,13 +91,16 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${dayCategories.meals}">
+                                <span th:if="${meal.typeLabel} != '' ">
                                 <strong th:text="${meal.typeLabel}"/>
                                 <span th:text="${meal.choiceLabel}"/>
+                                <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${dayCategories.id + '&typeLabel=' + meal.typeLabel}">[+]</a>
+                                <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${dayCategories.id + '&typeLabel=' + meal.typeLabel}">Sup</a>
+                                </span>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${dayCategories.id}">Add catégorie</a>
-                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${dayCategories.id}">Sup</a>
+                                    <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addChoice?id=' + ${dayCategories.id}">Add Choice</a>
                                 </div>
                             </div>
                         </div>

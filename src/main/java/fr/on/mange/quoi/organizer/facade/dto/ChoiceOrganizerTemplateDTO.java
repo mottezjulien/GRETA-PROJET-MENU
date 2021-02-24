@@ -5,7 +5,6 @@ public class ChoiceOrganizerTemplateDTO {
 
     private String label;
 
-
     public String getLabel() {
         return label;
     }

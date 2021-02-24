@@ -3,7 +3,9 @@ package fr.on.mange.quoi.organizer.facade;
 
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
+import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.service.ChoiceOrganizerWrapper;
+import fr.on.mange.quoi.organizer.domain.service.DayOrganizerService;
 import fr.on.mange.quoi.organizer.domain.service.DayOrganizerWrapper;
 import fr.on.mange.quoi.organizer.facade.dto.DayOrganizerDTO;
 import fr.on.mange.quoi.organizer.facade.wrapper.DayOrganizerDTOWrapper;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -45,25 +48,53 @@ public class ChoiceOrganizerController {
     @Autowired
     private RecipeExternalAdapter recipeAdapter;
 
+    @Autowired
+    private ChoiceOrganizerRepository choiceOrganizerRepository;
+
+    @Autowired
+    DayOrganizerService dayOrganizerService;
 
     @GetMapping("/addCategories")
-    public ModelAndView addCategories(@RequestParam("id") String id) throws ApplicationCommunicationException {
+    public ModelAndView addCategories(@RequestParam("id") String id, @RequestParam("typeLabel") String typeLabel) throws ApplicationCommunicationException {
         ModelAndView modelAndView = new ModelAndView("addCategories");
         modelAndView.addObject("allCategories", recipeAdapter.findAllCategories());
         DayOrganizerEntity dayOrganizerEntity = dayRepository.findByIdFetchAll(id).get();
         DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
         DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
-        modelAndView.addObject("dayCategories", dayOrganizerDTO );
+        modelAndView.addObject("dayCategories", dayOrganizerDTO);
+        modelAndView.addObject("typeLabel", typeLabel);
         return modelAndView;
     }
 
     @PostMapping("/addCategories")
-    public ModelAndView newChoiceCategories(@ModelAttribute("request") AddCategoryDTORequest request) {
+    public ModelAndView newCategoriesInSelectChoice(@ModelAttribute("request") AddCategoryDTORequest request) {
         Optional<DayOrganizerEntity> entity = dayRepository.findByIdFetchAll(request.getDayId());
-        if (entity.isPresent()) {
-            Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectOneCategoriesChoice(entity.get());
-            optChoice.ifPresent(choice -> insertCategory(choice, request.getCategoryId()));
-        }
+        Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectCategoriesChoice(entity.get(), request.getTypeLabel());
+        optChoice.ifPresent(choice -> insertCategory(choice, request.getCategoryId()));
+        return new ModelAndView("redirect:/editCategories?id="+request.getDayId());
+    }
+
+    @GetMapping("/addChoice")
+    public ModelAndView addChoice(@RequestParam("id") String id) throws ApplicationCommunicationException {
+        ModelAndView modelAndView = new ModelAndView("addChoice");
+        DayOrganizerEntity dayOrganizerEntity = dayRepository.findByIdFetchAll(id).get();
+        DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
+        DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
+        modelAndView.addObject("dayCategories", dayOrganizerDTO );
+        List <MealOrganizer> choiceList =  dayOrganizerService.createListLabel();
+        modelAndView.addObject("listChoice", choiceList);
+        return modelAndView;
+    }
+
+    // en cours
+    @PostMapping("/addChoice")
+    public ModelAndView newChoice(@ModelAttribute("request") AddChoiceDTORequest request) {
+        RecipeCategoriesChoiceOrganizerEntity recipeCategoriesChoiceOrganizerEntity = new RecipeCategoriesChoiceOrganizerEntity();
+        DayOrganizerEntity dayOrganizerEntity = new DayOrganizerEntity();
+        dayOrganizerEntity.setId(request.getDayId());
+        recipeCategoriesChoiceOrganizerEntity.setDay(dayOrganizerEntity);
+        recipeCategoriesChoiceOrganizerEntity.setMeal(request.getListChoice());
+        choiceOrganizerRepository.save(recipeCategoriesChoiceOrganizerEntity);
         return new ModelAndView("redirect:/editCategories?id="+request.getDayId());
     }
 
@@ -74,7 +105,6 @@ public class ChoiceOrganizerController {
         DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
         DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
         modelAndView.addObject("dayCategories", dayOrganizerDTO );
-      //  modelAndView.addObject("allCategories", recipeAdapter.findAllCategories());
         return modelAndView;
     }
 
@@ -88,16 +118,14 @@ public class ChoiceOrganizerController {
         return new ModelAndView("redirect:/organizer");
     }
     @GetMapping("/supCategories")
-    public ModelAndView supCategories(@RequestParam("id") String dayId) {
+    public ModelAndView supCategories(@RequestParam("id") String dayId, @RequestParam("typeLabel") String typeLabel) {
         Optional<DayOrganizerEntity> entity = dayRepository.findByIdFetchAll(dayId);
         if (entity.isPresent()) {
-            Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectOneCategoriesChoice(entity.get());
+            Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectCategoriesChoice(entity.get(), typeLabel);
             optChoice.ifPresent(choice -> deleteCategory(choice, dayId));
         }
         return new ModelAndView("redirect:/editCategories?id="+dayId);
     }
-
-
 
     //TODO:Julien:To delete when POST newChoiceCategories with choiceIdRequestParam
     private Optional<RecipeCategoriesChoiceOrganizerEntity> selectOneCategoriesChoice(DayOrganizerEntity entity) {
@@ -109,6 +137,18 @@ public class ChoiceOrganizerController {
         return Optional.empty();
     }
 
+    private Optional<RecipeCategoriesChoiceOrganizerEntity> selectCategoriesChoice(DayOrganizerEntity entity, String typeLabel) {
+        for(ChoiceOrganizerEntity choice: entity.getChoices()) {
+            if (choice.getMeal() != null) {
+                if (choice.getMeal().labelFr().equalsIgnoreCase(typeLabel)) {
+                    if (choice instanceof RecipeCategoriesChoiceOrganizerEntity) {
+                        return Optional.of((RecipeCategoriesChoiceOrganizerEntity) choice);
+                    }
+                }
+        }
+        }
+        return Optional.empty();
+    }
 
     //TODO:Julien:To delete when POST newChoiceCategories with choiceIdRequestParam
     private void insertCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
