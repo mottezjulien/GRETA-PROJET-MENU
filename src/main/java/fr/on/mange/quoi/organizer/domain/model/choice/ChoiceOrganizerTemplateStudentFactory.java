@@ -5,6 +5,7 @@ import fr.on.mange.quoi.generic.facade.IdLabelDTO;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.Organizer;
+import fr.on.mange.quoi.organizer.persistence.entity.*;
 import fr.on.mange.quoi.recipe.facade.adapter.RecipeExternalAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,82 +17,149 @@ public class ChoiceOrganizerTemplateStudentFactory implements ChoiceOrganizerTem
     @Autowired
     private RecipeExternalAdapter recipeExternalAdapter;
 
-    public Organizer build() {
+    public OrganizerEntity build() {
+
+/*
 
         //--------------------------------
-        Organizer organizerStudent = new Organizer();
+        OrganizerEntity organizerStudent = new OrganizerEntity();
+        organizerStudent.setLabel("template family");
+        //--------------------------------
+
+
+
+        //----------------MONDAY-----------------------
+        DayOrganizerEntity monday = new DayOrganizerEntity();
+        monday.setDayType(DayTypeOrganizerEntity.MONDAY);
+        monday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Compote"));
+        monday.getChoices().add(choice(MealOrganizer.LUNCH, "Gratin", "Yaourt"));
+        monday.getChoices().add(choice(MealOrganizer.SNACK, "Chocolat"));
+        monday.getChoices().add(choice(MealOrganizer.SUPPER, "Féculant", "Yaourt"));
+        organizerStudent.getDays().add(monday);
+
+        //----------------TUESDAY-----------------------
+        DayOrganizerEntity tuesday = new DayOrganizerEntity();
+        tuesday.setDayType(DayTypeOrganizerEntity.TUESDAY);
+        tuesday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Céréales"));
+        tuesday.getChoices().add(choice(MealOrganizer.LUNCH, "Tarte/Pizza/Cake"));
+        tuesday.getChoices().add(choice(MealOrganizer.SNACK, "Yaourt"));
+        tuesday.getChoices().add(choice(MealOrganizer.SUPPER, "Japonais"));
+        organizerStudent.getDays().add(tuesday);
+
+        //----------------WEDNESDAY-----------------------
+        DayOrganizerEntity wednesday = new DayOrganizerEntity();
+        wednesday.setDayType(DayTypeOrganizerEntity.WEDNESDAY);
+        wednesday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Yaourt", "Céréales"));
+        wednesday.getChoices().add(choice(MealOrganizer.LUNCH, "Féculant"));
+        wednesday.getChoices().add(choice(MealOrganizer.SNACK, "Compote"));
+        wednesday.getChoices().add(choice(MealOrganizer.SUPPER, "Gratin", "Compote"));
+        organizerStudent.getDays().add(wednesday);
+
+        //----------------THURSDAY-----------------------
+        DayOrganizerEntity thursday = new DayOrganizerEntity();
+        thursday.setDayType(DayTypeOrganizerEntity.THURSDAY);
+        thursday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Compote"));
+        thursday.getChoices().add(choice(MealOrganizer.LUNCH, "Burger"));
+        thursday.getChoices().add(choice(MealOrganizer.SNACK, "Chocolat"));
+        thursday.getChoices().add(choice(MealOrganizer.SUPPER, "Soupe", "Yaourt"));
+        organizerStudent.getDays().add(thursday);
+
+        //----------------FRIDAY-----------------------
+        DayOrganizerEntity friday = new DayOrganizerEntity();
+        friday.setDayType(DayTypeOrganizerEntity.FRIDAY);
+        friday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Céréales"));
+        friday.getChoices().add(choice(MealOrganizer.LUNCH, "Féculant"));
+        friday.getChoices().add(choice(MealOrganizer.SNACK, "Yaourt"));
+        friday.getChoices().add(choice(MealOrganizer.SUPPER, "Tarte/Pizza/Cake", "Bière"));
+        organizerStudent.getDays().add(friday);
+
+        //----------------SATURDAY-----------------------
+        DayOrganizerEntity saturday = new DayOrganizerEntity();
+        saturday.setDayType(DayTypeOrganizerEntity.SATURDAY);
+        saturday.getChoices().add(choice(MealOrganizer.ANYONE, "Gratin"));
+        saturday.getChoices().add(choice(MealOrganizer.ANYONE, "Féculant"));
+        saturday.getChoices().add(choice(MealOrganizer.ANYONE, "Yaourt"));
+        saturday.getChoices().add(choice(MealOrganizer.APERITIF, "Chips", "Bière"));
+        organizerStudent.getDays().add(saturday);
+
+        //----------------SUNDAY-----------------------
+        DayOrganizerEntity sunday = new DayOrganizerEntity();
+        sunday.setDayType(DayTypeOrganizerEntity.SUNDAY);
+        sunday.getChoices().add(choice(MealOrganizer.ANYONE, "Tarte/Pizza/Cake"));
+        sunday.getChoices().add(choice(MealOrganizer.ANYONE, "Gratin"));
+        sunday.getChoices().add(choice(MealOrganizer.ANYONE, "Compote"));
+        sunday.getChoices().add(choice(MealOrganizer.SNACK, "Chocolat", "Yaourt", "Compote"));
+        organizerStudent.getDays().add(sunday);
+
+        return organizerStudent;*/
+        
+
+        //--------------------------------
+        OrganizerEntity organizerStudent = new OrganizerEntity();
         organizerStudent.setLabel("template student");
         //--------------------------------
 
-        organizerStudent.insert(createOrgaDay(organizerStudent, DayOfWeek.MONDAY));
-        organizerStudent.insert(createOrgaDay(organizerStudent, DayOfWeek.TUESDAY));
-        organizerStudent.insert(createOrgaDay(organizerStudent, DayOfWeek.WEDNESDAY));
-        organizerStudent.insert(createOrgaDay(organizerStudent, DayOfWeek.THURSDAY));
-        organizerStudent.insert(createOrgaDay(organizerStudent, DayOfWeek.FRIDAY));
-        organizerStudent.insert(createOrgaDay(organizerStudent, DayOfWeek.SATURDAY));
-        organizerStudent.insert(createOrgaDay(organizerStudent, DayOfWeek.SUNDAY));
 
         //----------------MONDAY-----------------------
-        DayOrganizer monday = createOrgaDay(organizerStudent, DayOfWeek.MONDAY);
-        monday.put(MealOrganizer.BREAK_FAST, categories("Céréales", "Café"));
-        monday.put(MealOrganizer.SUPPER, categories("Gratin"));
-        organizerStudent.insert(monday);
+        DayOrganizerEntity monday = new DayOrganizerEntity();
+        monday.setDayType(DayTypeOrganizerEntity.MONDAY);
+        monday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Céréales", "Café"));
+        monday.getChoices().add(choice(MealOrganizer.SUPPER, "Gratin"));
+        organizerStudent.getDays().add(monday);
 
 
         //----------------TUESDAY-----------------------
-        DayOrganizer tuesday = createOrgaDay(organizerStudent, DayOfWeek.TUESDAY);
-        tuesday.put(MealOrganizer.BREAK_FAST, categories("Chocolat", "Café"));
-        tuesday.put(MealOrganizer.SUPPER, categories("Burger"));
-        organizerStudent.insert(tuesday);
+        DayOrganizerEntity tuesday = new DayOrganizerEntity();
+        tuesday.setDayType(DayTypeOrganizerEntity.TUESDAY);
+        tuesday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Chocolat", "Café"));
+        tuesday.getChoices().add(choice(MealOrganizer.SUPPER, "Burger"));
+        organizerStudent.getDays().add(tuesday);
 
         //----------------WEDNESDAY-----------------------
-        DayOrganizer wednesday = createOrgaDay(organizerStudent, DayOfWeek.WEDNESDAY);
-        wednesday.put(MealOrganizer.BREAK_FAST, categories("Yaourt", "Café"));
-        wednesday.put(MealOrganizer.SUPPER, categories("Féculant", "Compote"));
-        organizerStudent.insert(wednesday);
+        DayOrganizerEntity wednesday = new DayOrganizerEntity();
+        wednesday.setDayType(DayTypeOrganizerEntity.WEDNESDAY);
+        wednesday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Yaourt", "Café"));
+        wednesday.getChoices().add(choice(MealOrganizer.SUPPER, "Féculant", "Compote"));
+        organizerStudent.getDays().add(wednesday);
 
         //----------------THURSDAY-----------------------
-        DayOrganizer thursday = createOrgaDay(organizerStudent, DayOfWeek.THURSDAY);
-        thursday.put(MealOrganizer.BREAK_FAST, categories("Compote", "Café"));
-        thursday.put(MealOrganizer.SUPPER, categories("Tarte/Pizza/Cake", "Bière"));
-        organizerStudent.insert(thursday);
+        DayOrganizerEntity thursday = new DayOrganizerEntity();
+        thursday.setDayType(DayTypeOrganizerEntity.THURSDAY);
+        thursday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Compote", "Café"));
+        thursday.getChoices().add(choice(MealOrganizer.SUPPER, "Tarte/Pizza/Cake", "Bière"));
+        organizerStudent.getDays().add(thursday);
 
         //----------------FRIDAY-----------------------
-        DayOrganizer friday = createOrgaDay(organizerStudent, DayOfWeek.FRIDAY);
-        friday.put(MealOrganizer.BREAK_FAST, categories("Céréales", "Café"));
-        friday.put(MealOrganizer.APERITIF, categories("Bière", "Chips"));
-        friday.put(MealOrganizer.SUPPER, categories("Japonais"));
-        organizerStudent.insert(friday);
+        DayOrganizerEntity friday = new DayOrganizerEntity();
+        friday.setDayType(DayTypeOrganizerEntity.FRIDAY);
+        friday.getChoices().add(choice(MealOrganizer.BREAK_FAST, "Céréales", "Café"));
+        friday.getChoices().add(choice(MealOrganizer.APERITIF, "Bière", "Chips"));
+        friday.getChoices().add(choice(MealOrganizer.SUPPER, "Japonais"));
+        organizerStudent.getDays().add(friday);
 
         //----------------SATURDAY-----------------------
-        DayOrganizer saturday = createOrgaDay(organizerStudent, DayOfWeek.SATURDAY);
-        saturday.put(MealOrganizer.ANYONE, categories("Café"));
-        saturday.put(MealOrganizer.ANYONE, categories("Féculant"));
-        saturday.put(MealOrganizer.ANYONE, categories("Compote"));
-        saturday.put(MealOrganizer.APERITIF, categories("Chips", "Bière", "Tarte/Pizza/Cake"));
-        organizerStudent.insert(saturday);
+        DayOrganizerEntity saturday = new DayOrganizerEntity();
+        saturday.setDayType(DayTypeOrganizerEntity.SATURDAY);
+        saturday.getChoices().add(choice(MealOrganizer.ANYONE, "Café", "Compote", "Féculant"));
+        saturday.getChoices().add(choice(MealOrganizer.APERITIF, "Chips", "Bière", "Tarte/Pizza/Cake"));
+        organizerStudent.getDays().add(saturday);
 
         //----------------SUNDAY-----------------------
-        DayOrganizer sunday = createOrgaDay(organizerStudent, DayOfWeek.SUNDAY);
-        sunday.put(MealOrganizer.ANYONE, categories("Café"));
-        sunday.put(MealOrganizer.ANYONE, categories("Céréales"));
-        sunday.put(MealOrganizer.ANYONE, categories("Gratin"));
-        sunday.put(MealOrganizer.ANYONE, categories("Féculant"));
+        DayOrganizerEntity sunday = new DayOrganizerEntity();
+        sunday.setDayType(DayTypeOrganizerEntity.SUNDAY);
+        sunday.getChoices().add(choice(MealOrganizer.ANYONE, "Café", "Céréales", "Gratin", "Féculant"));
 
         return organizerStudent;
     }
 
-    private RecipeCategoriesChoiceOrganizer categories(String... labels) {
-        RecipeCategoriesChoiceOrganizer categories = new RecipeCategoriesChoiceOrganizer();
+    private ChoiceOrganizerEntity choice(MealOrganizer mealOrganizer, String... labels) {
+        RecipeCategoriesChoiceOrganizerEntity entity = new RecipeCategoriesChoiceOrganizerEntity();
+        entity.setMeal(mealOrganizer);
         for(String label : labels) {
             IdLabelDTO idLabel = recipeExternalAdapter.findByLabel(label).get();
-            categories.insert(new RecipeCategoryChoiceOrganizer(idLabel.getId(), idLabel.getLabel()));
+            entity.getRecipeCategoryIds().add(idLabel.getId());
         }
-        return categories;
+        return entity;
     }
-
-    private DayOrganizer createOrgaDay(Organizer organizer, DayOfWeek dayType) {
-        DayOrganizer day = new DayOrganizer(organizer, dayType);
-        return day;
-    }
+    
 }

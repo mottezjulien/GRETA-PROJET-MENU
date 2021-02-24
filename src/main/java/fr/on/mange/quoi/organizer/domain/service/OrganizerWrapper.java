@@ -29,13 +29,18 @@ public class OrganizerWrapper {
         return model;
     }
 
-    public OrganizerEntity toEntity(Organizer model) throws ApplicationCommunicationException {
+    /*public OrganizerEntity toEntity(Organizer model) throws ApplicationCommunicationException {
         OrganizerEntity entity = new OrganizerEntity();
+        entity.setId(model.getOptId().orElse(null));
         entity.setUserId(model.getOptUserId().get());
         entity.setLabel(model.getLabel());
         entity.setUserId(model.getOptUserId().get());
+
+        for ( DayOrganizer day : model.getDays()) {
+            entity.getDays().add(dayWrapper.toEntity(day))
+        }
         return entity;
-    }
+    }*/
 
     public List<Organizer> fromEntities(List<OrganizerEntity> listEntity) throws ApplicationCommunicationException {
         List<Organizer> organizers = new ArrayList<>();

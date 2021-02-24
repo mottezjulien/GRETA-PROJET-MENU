@@ -139,9 +139,9 @@ public class OrganizerService {
 
     public void createFromTemplate(ChoiceOrganizerTemplateDTO choiceOrganizerTemplateDTO) throws ApplicationCommunicationException {
         ChoiceOrganizerTemplateFactory factory = findFactory(choiceOrganizerTemplateDTO);
-        Organizer organizer = factory.build();
+        OrganizerEntity organizer = factory.build();
         try {
-            organizer.setOptUserId(findUserId());
+            organizer.setUserId(findUserId().orElse(null));
             saveAll(organizer);
         } catch (ApplicationServiceException e) {
             e.printStackTrace();
@@ -168,12 +168,15 @@ public class OrganizerService {
         return familyFactory;
     }
 
-    private void saveAll(Organizer organizer) {
-        try {
-            repository.save(wrapper.toEntity(organizer));
-
-        } catch (ApplicationCommunicationException e) {
-            e.printStackTrace();
+    private void saveAll(OrganizerEntity organizer) {
+        repository.save(organizer);
+        for(DayOrganizerEntity day : organizer.getDays()) {
+            day.setOrganizer(organizer);
+            dayRepository.save(day);
+            for(ChoiceOrganizerEntity choice: day.getChoices()) {
+                choice.setDay(day);
+                choiceRepository.save(choice);
+            }
         }
     }
 

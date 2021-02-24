@@ -3,7 +3,6 @@ package fr.on.mange.quoi.organizer.facade.wrapper;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.day.DayOfWeek;
 import fr.on.mange.quoi.organizer.facade.dto.DayOrganizerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
