@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
+img {
+    max-height: 250px;
+    margin-top: -10px;
+
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: Raleway;
+
+}
+.menu-category-box{
+    width: 250px;
+    height: 500px;
+    padding: 40px;
+    background: linear-gradient(90deg, rgb(200, 236, 205) 0%, rgb(200, 236, 205) 35%, rgb(173, 218, 179) 100%);
+    text-align: center;
+    border-radius: 20px;
+    margin: 12px;
+
+
+
+}
+.menu-category-box:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.category-rate ul{
+    display: flex;
+    justify-content: center;
+    margin-left: -30px;
+}
+ul li {
+    list-style: none;
+    margin: 0 10px;
+    color: rgb(255, 255, 255);
+
+}
+.category-actions{
+    padding: 24px;
+    background-color: rgb(238, 243, 229);
+    border-radius: 14px;
+    margin-top: 32px;
+
+}
+.menu-item-wrapper{
+    display: flex;
+    justify-content: center;
+
+}
+.txt-new-category {
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    font-family: Raleway;
+    font-size: 16px;
+}
+.txt-new-category:hover {
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: #fff;
+
+}
+.txt-new-category:focus {
+    border: none;
+    box-shadow: solid #fff 1px ;
+    outline: none;
+
+}
+.btn-new-category {
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 5px;
+    border: none;
+    background-color: green;
+    color: #fff;
+    font-family: Raleway;
+    font-size: 16px;
+
+}
+.btn-new-category:hover {
+    background-color: rgb(18, 90, 18);
+}
+.btn-new-category:focus {
+    border:none;
+    outline: none;
+}
+th {
+    padding: 24px;
+}
+td {
+    padding: 24px;
+}
+.btn-create {
+    color: green;
+    font-size: 40px;
+    text-align: right;
+
+}
+.btn-edit {
+    color: orange;
+    font-size: 40px;
+    text-align: right;
+
+}
+.btn-delete {
+    color: red;
+    font-size: 40px;
+    text-align: right;
+
+}
+a{
+    font-size: 40px;
+    text-align: right;
+
+}
