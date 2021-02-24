@@ -91,11 +91,10 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${dayCategories.meals}">
-                                <span th:if="${meal.typeLabel} != '' ">
                                 <strong th:text="${meal.typeLabel}"/>
                                 <span th:text="${meal.choiceLabel}"/>
                                 <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/addCategories?id=' + ${dayCategories.id + '&typeLabel=' + meal.typeLabel}">[+]</a>
-                                    </span>
+                                <a type="button" class="btn btn-sm btn-outline-secondary" th:href="'/supCategories?id=' + ${dayCategories.id + '&typeLabel=' + meal.typeLabel}">Sup</a>
                             </p>
                             <div class="container">
                                 <form class="form" name="request" action="/addChoice" method="post">

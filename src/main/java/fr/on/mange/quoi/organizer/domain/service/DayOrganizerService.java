@@ -19,17 +19,47 @@ public class DayOrganizerService {
     @Autowired
     DayOrganizerRepository dayOrganizerRepository;
 
-    public List<MealOrganizer> createListLabel () {
+    public List<MealOrganizer> createListLabel() {
 
-        List <MealOrganizer> mealOrganizerList = List.of(MealOrganizer.LUNCH,
+        List<MealOrganizer> mealOrganizerList = List.of(MealOrganizer.LUNCH,
                 MealOrganizer.APERITIF,
                 MealOrganizer.SNACK,
                 MealOrganizer.BREAK_FAST,
                 MealOrganizer.SUPPER);
-
         return mealOrganizerList;
     }
 
+    public List<MealOrganizer> createNewListLabel (DayOrganizerDTO dayOrganizerDTO) {
+
+        List <MealOrganizer> empty = new ArrayList<>();
+        List<MealOrganizer> mealOrganizerList = new ArrayList<>(List.of(MealOrganizer.LUNCH,
+                MealOrganizer.APERITIF,
+                MealOrganizer.SNACK,
+                MealOrganizer.BREAK_FAST,
+                MealOrganizer.SUPPER));
+
+        System.out.println("avant");
+        for (MealOrganizer test : mealOrganizerList) {
+            System.out.println(test.labelFr());
+        }
+
+      for (int i = 0; i < mealOrganizerList.size(); i++ ) {
+          for (MealOrganizerDTO listeRecu : dayOrganizerDTO.getMeals()) {
+              if (mealOrganizerList.get(i).labelFr().equals(listeRecu.getTypeLabel())) {
+                  mealOrganizerList.remove(i);
+              }
+          }
+
+      }
+
+        System.out.println("en sortie :");
+        System.out.println("get 0" + mealOrganizerList.get(0));
+        for (MealOrganizer test : mealOrganizerList) {
+            System.out.println(test.labelFr());
+        }
+
+        return mealOrganizerList;
+    }
 
 
 }

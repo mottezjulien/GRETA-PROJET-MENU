@@ -81,7 +81,7 @@ public class ChoiceOrganizerController {
         DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
         DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
         modelAndView.addObject("dayCategories", dayOrganizerDTO );
-        List <MealOrganizer> choiceList =  dayOrganizerService.createListLabel();
+        List <MealOrganizer> choiceList =  dayOrganizerService.createNewListLabel(dayOrganizerDTO);
         modelAndView.addObject("listChoice", choiceList);
         return modelAndView;
     }
@@ -122,6 +122,7 @@ public class ChoiceOrganizerController {
         Optional<DayOrganizerEntity> entity = dayRepository.findByIdFetchAll(dayId);
         if (entity.isPresent()) {
             Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectCategoriesChoice(entity.get(), typeLabel);
+
             optChoice.ifPresent(choice -> deleteCategory(choice, dayId));
         }
         return new ModelAndView("redirect:/editCategories?id="+dayId);
@@ -145,7 +146,7 @@ public class ChoiceOrganizerController {
                         return Optional.of((RecipeCategoriesChoiceOrganizerEntity) choice);
                     }
                 }
-        }
+             }
         }
         return Optional.empty();
     }
@@ -157,14 +158,17 @@ public class ChoiceOrganizerController {
     }
 
     private void updateCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
-       if (!choice.getRecipeCategoryIds().isEmpty()) {
+      // if (!choice.getRecipeCategoryIds().isEmpty()) {
            choice.getRecipeCategoryIds().clear();
            choice.getRecipeCategoryIds().add(categoryId);
            repository.save(choice);
-       }
+     //  }
     }
 
     private void deleteCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
+        if (choice.getRecipeCategoryIds().isEmpty()) {
+            choice.setMeal(null);
+        }
         choice.getRecipeCategoryIds().clear();
         repository.save(choice);
     }
