@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -19,17 +20,13 @@ public class DayOrganizerService {
     @Autowired
     DayOrganizerRepository dayOrganizerRepository;
 
-    public List<MealOrganizer> createListLabel () {
-
-        List <MealOrganizer> mealOrganizerList = List.of(MealOrganizer.LUNCH,
+    public List<MealOrganizer> createListLabel() {
+        List<MealOrganizer> mealOrganizerList = List.of(MealOrganizer.LUNCH,
                 MealOrganizer.APERITIF,
                 MealOrganizer.SNACK,
                 MealOrganizer.BREAK_FAST,
                 MealOrganizer.SUPPER);
-
         return mealOrganizerList;
     }
-
-
 
 }

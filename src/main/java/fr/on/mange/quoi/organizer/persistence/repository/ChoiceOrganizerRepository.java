@@ -11,5 +11,6 @@ import javax.transaction.Transactional;
 @Repository
 public interface ChoiceOrganizerRepository extends JpaRepository<ChoiceOrganizerEntity, String> {
 
+    ChoiceOrganizerEntity findByDayId(String dayId);
 
 }

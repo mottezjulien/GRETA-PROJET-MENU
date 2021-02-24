@@ -1,6 +1,7 @@
 package fr.on.mange.quoi.user.model.service;
 
 import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
+import fr.on.mange.quoi.user.facade.dto.UserRegistrationDTO;
 import fr.on.mange.quoi.user.model.User;
 import fr.on.mange.quoi.user.model.wrapper.UserWrapper;
 import fr.on.mange.quoi.user.persistance.UserEntity;
@@ -32,5 +33,15 @@ public class UserService {
         }else {
             throw new ApplicationServiceException("User not found");
         }
+    }
+
+    public UserRegistrationDTO autoLog() {
+        UserRegistrationDTO autoUser = new UserRegistrationDTO();
+        autoUser.setFirstname("autoFirstName");
+        autoUser.setLastname("autoLastName");
+        autoUser.setLogin("autoUser");
+        autoUser.setEmail("autoUser@Gmail.com");
+        autoUser.setPassword("123");
+        return autoUser;
     }
 }
