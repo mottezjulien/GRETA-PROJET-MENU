@@ -48,6 +48,9 @@ public class Runner {
     @Autowired
     private RecipeDishMenuRepository dishMenuRepository;
 
+    @Autowired
+    private MenuRepository menuRepository;
+
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
@@ -146,8 +149,7 @@ public class Runner {
         diner.setMeal(MealMenu.SUPPER);
         mealMenuRepository.save(diner);*/
 
-    @Autowired
-    private MenuRepository menuRepository;
+
 
         createOrgaDayWithCategoryChoice(organizer, DayTypeOrganizerEntity.MONDAY, gratin);
         createOrgaDayWithCategoryChoice(organizer, DayTypeOrganizerEntity.TUESDAY, tartePizzaCake);
