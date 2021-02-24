@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Category</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+<body>
+<form action="#" th:action="@{/recipe/add}" th:object="${category}" method="post" >
+    <label for="name">Add a Category</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name of Category" class="inputs" autocomplete="off">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <button type="submit" class="btn-new-category">Save</button>
+<!--    <input type="submit" value="+">-->
+<!--    <a href=""  class="fas fa-plus-circle" style="color: green;" onMouseOver="this.style.color='#226436'" onmouseout="this.style.color='green'"></a>-->
+
+</form>
+</body>
+</html>
