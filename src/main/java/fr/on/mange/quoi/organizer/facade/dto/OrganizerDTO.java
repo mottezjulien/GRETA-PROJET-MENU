@@ -14,6 +14,7 @@ public class OrganizerDTO {
     private DayOrganizerDTO saturday;
     private DayOrganizerDTO sunday;
     private DayOrganizerDTO noMatterDay;
+    private String userId;
 
     public void setLabel(String label) {
         this.label = label;
@@ -85,5 +86,13 @@ public class OrganizerDTO {
 
     public void setNoMatterDay(DayOrganizerDTO noMatterDay) {
         this.noMatterDay = noMatterDay;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

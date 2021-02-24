@@ -25,7 +25,7 @@ public class DayOrganizerEntity {
     @Column(name = "day_type")
     private DayTypeOrganizerEntity dayType;
 
-    @OneToMany(mappedBy = "day", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "day", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ChoiceOrganizerEntity> choices = new HashSet<>();
 
     public String getId() {

@@ -1,18 +1,13 @@
 package fr.on.mange.quoi.organizer.domain.service;
 
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
-import fr.on.mange.quoi.generic.facade.IdLabelDTO;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoriesChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoryChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeDishChoiceOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.day.Day;
 import fr.on.mange.quoi.organizer.domain.model.day.DayNoMatter;
 import fr.on.mange.quoi.organizer.domain.model.day.DayOfWeek;
 import fr.on.mange.quoi.organizer.persistence.entity.*;
-import fr.on.mange.quoi.recipe.facade.adapter.RecipeExternalAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +21,13 @@ public class DayOrganizerWrapper {
 
     public DayOrganizer fromEntity(DayOrganizerEntity entity) throws ApplicationCommunicationException {
         return new DayOrganizer(Optional.of(entity.getId()), day(entity.getDayType()), choicesByMeal(entity.getChoices()));
+    }
+
+    public DayOrganizer fromEntityWithDay(DayOrganizerEntity entity) throws ApplicationCommunicationException {
+        Day day = day(entity.getDayType());
+        DayOrganizer dayOrganizer = new DayOrganizer(Optional.of(entity.getId()), day, choicesByMeal(entity.getChoices()));
+        //dayOrganizer.setDayValue(String.valueOf(entity.getDayType()));
+        return  dayOrganizer;
     }
 
     private Day day(DayTypeOrganizerEntity entity) {
@@ -57,6 +59,4 @@ public class DayOrganizerWrapper {
         }
         return meal;
     }
-
-
 }

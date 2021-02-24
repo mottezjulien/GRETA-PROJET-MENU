@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,8 +20,16 @@ public class OrganizerEntity {
 
     private String label;
 
-    @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<DayOrganizerEntity> days = new HashSet<>();
+
+    public OrganizerEntity() {
+    }
+
+    public OrganizerEntity(String userId, String label) {
+        this.userId = userId;
+        this.label = label;
+    }
 
     public String getId() {
         return id;
@@ -55,4 +62,5 @@ public class OrganizerEntity {
     public void setDays(Set<DayOrganizerEntity> days) {
         this.days = days;
     }
+
 }
