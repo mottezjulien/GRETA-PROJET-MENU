@@ -6,11 +6,14 @@ import java.util.Optional;
 
 public class Organizer {
 
-    private Optional<String> optId =  Optional.empty();
+    private Optional<String> optId = Optional.empty();
 
     private String label;
 
-    private List<DayOrganizer> meals = new ArrayList<>();
+    private List<DayOrganizer> days = new ArrayList<>();
+
+    private Optional<String> optUserId = Optional.empty();
+
 
     public Optional<String> getOptId() {
         return optId;
@@ -29,16 +32,27 @@ public class Organizer {
     }
 
     public void insert(DayOrganizer meal) {
-        meals.add(meal);
+        days.add(meal);
     }
 
-    public List<DayOrganizer> meals() {
-        return new ArrayList<>(meals);
+    public List<DayOrganizer> days() {
+        return new ArrayList<>(days);
     }
 
+    public List<DayOrganizer> getDays() {
+        return days;
+    }
 
+    public void setDays(List<DayOrganizer> days) {
+        this.days = days;
+    }
 
+    public Optional<String> getOptUserId() {
+        return optUserId;
+    }
 
-
+    public void setOptUserId(Optional<String> optUserId) {
+        this.optUserId = optUserId;
+    }
 
 }
