@@ -25,8 +25,6 @@ public class ChoiceOrganizerTemplateFamilyFactory implements ChoiceOrganizerTemp
         organizerFamilial.setLabel("template family");
         //--------------------------------
 
-
-
         //----------------MONDAY-----------------------
         DayOrganizerEntity monday = new DayOrganizerEntity();
         monday.setDayType(DayTypeOrganizerEntity.MONDAY);
@@ -98,15 +96,4 @@ public class ChoiceOrganizerTemplateFamilyFactory implements ChoiceOrganizerTemp
         }
         return entity;
     }
-
-    /*
-    private RecipeCategoriesChoiceOrganizer String... labels) {
-        RecipeCategoriesChoiceOrganizer categories = new RecipeCategoriesChoiceOrganizer();
-        for(String label:  labels) {
-            IdLabelDTO idLabel = recipeExternalAdapter.findByLabel(label).get();
-            categories.getDays().add(new RecipeCategoryChoiceOrganizer(idLabel.getId(), idLabel.getLabel()));
-        }
-        return categories;
-    }*/
-
 }

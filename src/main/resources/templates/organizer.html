@@ -47,10 +47,58 @@
         <div class="container">
             <h1 class="jumbotron-heading">Organisateur de Menu</h1>
             <h2 th:text="${organizer.label}"/>
-
+            <br/>
+            <br/>
+            <!-- 
             <div sec:authorize="isAuthenticated()">
             <a type="button" class="btn btn-secondary" href="/organizer/new">Ajouter un organisateur</a>
             </div>
+            -->
+            <div class="collapse" id="collapseBar">
+                <div class="container justify-content-center">
+                    <div class="row justify-content-center">
+                        <div class="justify-content-center"> <!-- col-sm-8 col-md-7 py-4  -->
+                            <form class="form" name="request" action="/organizer/new" method="post">
+                                <input type="hidden" th:value="${login}" name="login"/>
+                                <label for="inputLabel"><strong>Créer un organisateur vide :</strong></label>
+                                <br/>
+                                <input type="text" id="inputLabel" class="form-control" name="label"  required autofocus/>
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">Valider</button>
+                            </form>
+                            <br/>
+                            <h2>- OU -</h2>
+                            <br/>
+                            <form class="form" name="request" action="/organizer/new/template" method="POST"> 
+                                <label for="flexRadioDefault1"><strong>Ajouter un exemple d'organisateur familial ou étudiant :</strong></label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="label" value="family" id="flexRadioDefault1">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Template familial
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="label" value="student" id="flexRadioDefault2">
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Template étudiant
+                                    </label>
+                                  </div>
+                                  <button class="btn btn-sm btn-outline-secondary" type="submit">Ajouter</button>
+                            </form>
+                            <br/>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar box-shadow bg-secondary text-white">
+                <div class="container d-flex justify-content-between">
+                        <strong>Ajouter un organisateur</strong>                   
+                    <button class="navbar-toggler-white" type="button" data-toggle="collapse" data-target="#collapseBar"
+                            aria-controls="collapseBar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>    
+
             <!--
             <div sec:authorize="isAuthenticated()">
             <p>
@@ -93,7 +141,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.monday.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}">  :</strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -111,7 +159,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.tuesday.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}"> : </strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -129,7 +177,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.wednesday.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}"> : </strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -147,7 +195,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.thursday.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}"> : </strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -165,7 +213,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.friday.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}"> : </strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -183,7 +231,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.saturday.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}"> : </strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -201,7 +249,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.sunday.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}"> : </strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -219,7 +267,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:each="meal: ${organizer.noMatterDay.meals}">
-                                <strong th:text="${meal.typeLabel}"/>
+                                <strong th:text="${meal.typeLabel}"> : </strong>
                                 <span th:text="${meal.choiceLabel}"/>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -232,7 +280,18 @@
                 </div>
             </div>
         </div>
+        <br/>
+            <div class="d-flex justify-content-center align-items-center">           
+                <a type="button" class="btn btn-primary" href="/menu">Génerer un menu à partir de mon organisateur</a>
+            </div>   
+        <br/>
+        <br/>
+            <div class="d-flex justify-content-center align-items-center">           
+                <a type="button" class="btn btn-primary" href="/recipe/category">Gestion des catégories (recette(s))</a>
+            </div>   
+        <br/>      
     </div>
+    
     <div sec:authorize="isAuthenticated()">
         <div class="container-lg">
             <table class="table">
