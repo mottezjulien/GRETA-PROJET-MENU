@@ -1,5 +1,7 @@
 package fr.on.mange.quoi;
 
+import fr.on.mange.quoi.menu.MealMenu;
+import fr.on.mange.quoi.menu.persistence.*;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoriesChoicePreparationOrganizer;
 import fr.on.mange.quoi.organizer.persistence.entity.DayOrganizerEntity;
@@ -21,9 +23,12 @@ import org.springframework.context.event.EventListener;
 /*@EnableGlobalMethodSecurity(prePostEnabled = true)*/
 public class Runner {
 
+
     public static void main(String[] args) {
         SpringApplication.run(Runner.class, args);
     }
+    @Autowired
+    private MealMenuRepository mealMenuRepository;
 
     @Autowired
     private RecipeCategoryRepository recipeCategoryRepository;
@@ -37,14 +42,26 @@ public class Runner {
     @Autowired
     private ChoiceOrganizerRepository choiceOrganizerRepository;
 
+    @Autowired
+    private DayMenuRepository dayMenuRepository;
+
+    @Autowired
+    private RecipeDishMenuRepository dishMenuRepository;
+
+
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
         if (organizerRepository.count() == 0) {
-            init();
+            initrOrganizer();
+        }
+        if(menuRepository.count() == 0) {
+            initMenu();
         }
     }
 
-    private void init() {
+
+
+    private void initrOrganizer() {
         RecipeCategoryEntity gratin = new RecipeCategoryEntity();
         gratin.setLabel("Gratin");
         recipeCategoryRepository.save(gratin);
@@ -101,6 +118,36 @@ public class Runner {
         organizer.setLabel("Organisateur d'exemple");
         organizerRepository.save(organizer);
 
+     /*   MenuEntity dateDebut = new MenuEntity();
+        dateDebut.setDateDebut("15/02/2021");
+        menuRepository.save(dateDebut);
+
+        MenuEntity dateFin = new MenuEntity();
+        dateFin.setDateFin("21/02/2021");
+        menuRepository.save(dateFin);
+
+        MealMenuEntity ptitdej = new MealMenuEntity();
+        ptitdej.setMeal(MealMenu.BREAK_FAST);
+        mealMenuRepository.save(ptitdej);
+
+        MealMenuEntity dej = new MealMenuEntity();
+        dej.setMeal(MealMenu.LUNCH);
+        mealMenuRepository.save(dej);
+
+        MealMenuEntity gouter = new MealMenuEntity();
+        gouter.setMeal(MealMenu.SNACK);
+        mealMenuRepository.save(gouter);
+
+        MealMenuEntity apero = new MealMenuEntity();
+        apero.setMeal(MealMenu.APERITIF);
+        mealMenuRepository.save(apero);
+
+        MealMenuEntity diner = new MealMenuEntity();
+        diner.setMeal(MealMenu.SUPPER);
+        mealMenuRepository.save(diner);*/
+
+    @Autowired
+    private MenuRepository menuRepository;
 
         createOrgaDayWithCategoryChoice(organizer, DayTypeOrganizerEntity.MONDAY, gratin);
         createOrgaDayWithCategoryChoice(organizer, DayTypeOrganizerEntity.TUESDAY, tartePizzaCake);
@@ -177,6 +224,68 @@ public class Runner {
         day.setDayType(dayType);
         dayOrganizerRepository.save(day);
         return day;
+    }
+
+
+
+    private void initMenu() {
+        MenuEntity entity = new MenuEntity();
+        entity.setDateDebut("15/02/2021");
+        entity.setDateFin("21/02/2021");
+        menuRepository.save(entity);
+//---------------------------------------------------------------------------------
+        DayMenuEntity dayMondayMenuEntity = new DayMenuEntity();
+        dayMondayMenuEntity.setMenu(entity);
+        dayMondayMenuEntity.setDay(DayTypeMenuEntity.MONDAY);
+        dayMenuRepository.save(dayMondayMenuEntity);
+
+        RecipeDishMenuEntity recipeOrangeJuice = new RecipeDishMenuEntity();
+        recipeOrangeJuice.setLabel("Jus d'orange");
+        recipeOrangeJuice = dishMenuRepository.save(recipeOrangeJuice);
+
+        RecipeDishMenuEntity recipeGratin = new RecipeDishMenuEntity();
+        recipeGratin.setLabel("Gratin");
+        recipeGratin = dishMenuRepository.save(recipeGratin);
+
+
+        RecipeDishMenuEntity recipeBurger = new RecipeDishMenuEntity();
+        recipeBurger.setLabel("Burger");
+        recipeBurger = dishMenuRepository.save(recipeBurger);
+
+        MealMenuEntity mealMenuEntity = new MealMenuEntity();
+        mealMenuEntity.setDay(dayMondayMenuEntity);
+        mealMenuEntity.setMeal(MealMenu.BREAK_FAST);
+        mealMenuEntity.setRecipeDishId(recipeOrangeJuice.getId());
+        mealMenuRepository.save(mealMenuEntity);
+
+        MealMenuEntity mealMenuEntity1 = new MealMenuEntity();
+        mealMenuEntity1.setDay(dayMondayMenuEntity);
+        mealMenuEntity1.setMeal(MealMenu.LUNCH);
+        mealMenuEntity1.setRecipeDishId(recipeGratin.getId());
+        mealMenuRepository.save(mealMenuEntity1);
+
+        MealMenuEntity mealMenuEntity2 = new MealMenuEntity();
+        mealMenuEntity2.setDay(dayMondayMenuEntity);
+        mealMenuEntity2.setMeal(MealMenu.SUPPER);
+        mealMenuEntity2.setRecipeDishId(recipeBurger.getId());
+        mealMenuRepository.save(mealMenuEntity2);
+
+//---------------------------------------------------------------------------------
+
+        DayMenuEntity dayTuesdayMenuEntity = new DayMenuEntity();
+        dayTuesdayMenuEntity.setMenu(entity);
+        dayTuesdayMenuEntity.setDay(DayTypeMenuEntity.TUESDAY);
+        dayMenuRepository.save(dayTuesdayMenuEntity);
+
+        RecipeDishMenuEntity recipeTartePizzaCake = new RecipeDishMenuEntity();
+        recipeTartePizzaCake.setLabel("Tarte/Pizza/Cake");
+        recipeTartePizzaCake = dishMenuRepository.save(recipeTartePizzaCake);
+
+        MealMenuEntity mealMenuEntity3 = new MealMenuEntity();
+        mealMenuEntity3.setDay(dayTuesdayMenuEntity);
+        mealMenuEntity3.setMeal(MealMenu.LUNCH);
+        mealMenuEntity3.setRecipeDishId(recipeTartePizzaCake.getId());
+        mealMenuRepository.save(mealMenuEntity3);
     }
 
 }
