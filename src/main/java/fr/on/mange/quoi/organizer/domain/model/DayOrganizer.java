@@ -1,53 +1,40 @@
 package fr.on.mange.quoi.organizer.domain.model;
 
 import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizer;
-import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoriesChoiceOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.day.Day;
 import fr.on.mange.quoi.organizer.domain.model.day.DayNoMatter;
-import fr.on.mange.quoi.organizer.domain.model.day.DayOfWeek;
+import fr.on.mange.quoi.organizer.domain.model.day.DayOfWeekModel;
 
+import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class DayOrganizer {
 
-    private Optional<String> optId;
+    private Optional<String> optId = Optional.empty();
 
     private Day day;
 
     private Map<MealOrganizer, ChoiceOrganizer> choiceByType = new HashMap<>();
 
-    private Organizer organizer;
-
-    private java.time.DayOfWeek dayType;
-
-    /*private String dayValue;
-
-    public String getDayValue() {
-        return dayValue;
-    }
-
-    public void setDayValue(String dayValue) {
-        this.dayValue = dayValue;
-    }*/
-
     public DayOrganizer(Optional<String> optId, Day day, Map<MealOrganizer, ChoiceOrganizer> choiceByType) {
         this.optId = optId;
         this.day = day;
         this.choiceByType = choiceByType;
-
     }
 
-    public DayOrganizer(Organizer organizer, java.time.DayOfWeek dayType) {
-        this.organizer = organizer;
-        this.dayType = dayType;
+    public DayOrganizer(Day day) {
+        this.day = day;
     }
 
+    public DayOrganizer(DayOfWeek dayOfWeek) {
+        this.day = new DayOfWeekModel(dayOfWeek);
+    }
 
     public boolean isSameDay(java.time.DayOfWeek dayOfWeek) {
-        return day instanceof DayOfWeek
-                && ((DayOfWeek) day).toJavaTime().equals(dayOfWeek);
+        return day instanceof DayOfWeekModel
+                && ((DayOfWeekModel) day).toJavaTime().equals(dayOfWeek);
     }
 
     public boolean isNoMatterDay() {
@@ -58,7 +45,7 @@ public class DayOrganizer {
         if(isNoMatterDay()) {
             return "";
         }
-        return ((DayOfWeek) day).toJavaTime().toString();
+        return ((DayOfWeekModel) day).toJavaTime().toString();
     }
 
     public Map<MealOrganizer, ChoiceOrganizer> choiceByType() {
@@ -73,7 +60,12 @@ public class DayOrganizer {
         choiceByType.put(meal, choice);
     }
 
-
+    public Optional<DayOfWeekModel> toDayOfWeek () {
+        if (isNoMatterDay()) {
+            return Optional.empty();
+        }
+        return Optional.of((DayOfWeekModel) day);
+    }
 
 
 }
