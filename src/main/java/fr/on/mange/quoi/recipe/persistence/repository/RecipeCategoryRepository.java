@@ -11,7 +11,5 @@ import java.util.Optional;
 @Repository
 public interface RecipeCategoryRepository extends JpaRepository<RecipeCategoryEntity, String> {
 
-
     Optional<IdLabelDTO> findByLabel(String label);
-
 }
