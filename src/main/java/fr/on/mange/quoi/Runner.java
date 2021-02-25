@@ -18,6 +18,7 @@ import fr.on.mange.quoi.recipe.persistence.repository.RecipeCategoryRepository;
 import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
 import fr.on.mange.quoi.user.model.User;
 import fr.on.mange.quoi.user.model.service.UserService;
+import fr.on.mange.quoi.user.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -65,13 +66,16 @@ public class Runner {
     @Autowired
     private UserRegistrationDTOWrapper wrapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() throws ApplicationServiceException {
-        User user = userService.saveNewUser(wrapper.fromDTO(userService.autoLog()));
-        OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(), "Auto Organizer"));
-        organizerService.initDays(organizerEntity);
-        userService.saveNewDefaultOrganizer(user.getLogin(), organizerEntity.getId());
+
+        if (!(userRepository.findByLogin("autoUser").isPresent())) {
+            initAutoLog();
+        }
 
         if (organizerRepository.count() == 0) {
             initrOrganizer();
@@ -81,7 +85,12 @@ public class Runner {
         }
     }
 
-
+    private void initAutoLog() throws ApplicationServiceException {
+        User user = userService.saveNewUser(wrapper.fromDTO(userService.autoLog()));
+        OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(), "Auto Organizer"));
+        organizerService.initDays(organizerEntity);
+        userService.saveNewDefaultOrganizer(user.getLogin(), organizerEntity.getId());
+    }
 
     private void initrOrganizer() {
         RecipeCategoryEntity gratin = new RecipeCategoryEntity();
