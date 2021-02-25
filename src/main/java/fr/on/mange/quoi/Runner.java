@@ -79,14 +79,14 @@ public class Runner {
         if(menuRepository.count() == 0) {
             initMenu();
         }
-        if(!userService.isExistAutoConnectionUser()){
+        if(!(userService.isExistAutoConnectionUser())){
             initAutoLog();
         }
     }
 
     private void initAutoLog() throws ApplicationServiceException {
-        //User user = userService.saveNewUser(wrapper.fromDTO(userService.autoLog()));
-        User user = userService.createAutoConnectionUser();
+        User user = userService.saveNewUser(wrapper.fromDTO(userService.createAutoConnectionUser()));
+        userService.saveNewUser(user);
         OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(), "Auto Organizer"));
         organizerService.initDays(organizerEntity);
         userService.saveNewDefaultOrganizer(user.getLogin(), organizerEntity.getId());

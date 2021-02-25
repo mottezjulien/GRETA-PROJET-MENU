@@ -2,6 +2,7 @@ package fr.on.mange.quoi.user.model.service;
 
 import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
 import fr.on.mange.quoi.user.facade.dto.UserRegistrationDTO;
+import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
 import fr.on.mange.quoi.user.model.User;
 import fr.on.mange.quoi.user.model.wrapper.UserWrapper;
 import fr.on.mange.quoi.user.persistance.UserEntity;
@@ -23,6 +24,9 @@ public class UserService {
     @Autowired
     private UserWrapper wrapper;
 
+    @Autowired
+    private UserRegistrationDTOWrapper userRegistrationDTOWrapper;
+
     public User saveNewUser(User user) {
         return wrapper.fromEntity(repository.save(wrapper.toEntity(user)));
     }
@@ -38,14 +42,14 @@ public class UserService {
         }
     }
 
-    public User createAutoConnectionUser() {
-        UserEntity autoUser = new UserEntity();
+    public UserRegistrationDTO createAutoConnectionUser() {
+        UserRegistrationDTO autoUser = new UserRegistrationDTO();
         autoUser.setFirstname("autoFirstName");
         autoUser.setLastname("autoLastName");
         autoUser.setLogin(LOGIN_AUTO_USER);
         autoUser.setEmail("autoUser@Gmail.com");
         autoUser.setPassword("123");
-        return wrapper.fromEntity(repository.save(autoUser));
+        return autoUser;
     }
 
     public boolean isExistAutoConnectionUser() {

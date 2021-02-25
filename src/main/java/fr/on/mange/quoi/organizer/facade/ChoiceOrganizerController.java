@@ -180,7 +180,8 @@ public class ChoiceOrganizerController {
 
     private void deleteCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
         if (choice.getRecipeCategoryIds().isEmpty()) {
-            choice.setMeal(null);
+            repository.delete(choice);
+            //choice.setMeal(null);
         }
         choice.getRecipeCategoryIds().clear();
         repository.save(choice);
