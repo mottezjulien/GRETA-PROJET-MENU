@@ -8,6 +8,7 @@ import fr.on.mange.quoi.user.model.wrapper.UserWrapper;
 import fr.on.mange.quoi.user.persistance.UserEntity;
 import fr.on.mange.quoi.user.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,7 +26,7 @@ public class UserService {
     private UserWrapper wrapper;
 
     @Autowired
-    private UserRegistrationDTOWrapper userRegistrationDTOWrapper;
+    private PasswordEncoder passwordEncoder;
 
     public User saveNewUser(User user) {
         return wrapper.fromEntity(repository.save(wrapper.toEntity(user)));
@@ -42,14 +43,14 @@ public class UserService {
         }
     }
 
-    public UserRegistrationDTO createAutoConnectionUser() {
-        UserRegistrationDTO autoUser = new UserRegistrationDTO();
+    public User createAutoConnectionUser() {
+        UserEntity autoUser = new UserEntity();
         autoUser.setFirstname("autoFirstName");
         autoUser.setLastname("autoLastName");
         autoUser.setLogin(LOGIN_AUTO_USER);
         autoUser.setEmail("autoUser@Gmail.com");
-        autoUser.setPassword("123");
-        return autoUser;
+        autoUser.setPassword(passwordEncoder.encode("123"));
+        return wrapper.fromEntity(repository.save(autoUser));
     }
 
     public boolean isExistAutoConnectionUser() {
