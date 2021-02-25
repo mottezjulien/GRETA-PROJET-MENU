@@ -4,10 +4,12 @@ package fr.on.mange.quoi.organizer.facade;
 import fr.on.mange.quoi.generic.exception.ApplicationCommunicationException;
 import fr.on.mange.quoi.organizer.domain.model.DayOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
+import fr.on.mange.quoi.organizer.domain.model.choice.ChoiceOrganizer;
 import fr.on.mange.quoi.organizer.domain.service.ChoiceOrganizerWrapper;
 import fr.on.mange.quoi.organizer.domain.service.DayOrganizerService;
 import fr.on.mange.quoi.organizer.domain.service.DayOrganizerWrapper;
 import fr.on.mange.quoi.organizer.facade.dto.DayOrganizerDTO;
+import fr.on.mange.quoi.organizer.facade.dto.MealOrganizerDTO;
 import fr.on.mange.quoi.organizer.facade.wrapper.DayOrganizerDTOWrapper;
 import fr.on.mange.quoi.organizer.persistence.entity.ChoiceOrganizerEntity;
 import fr.on.mange.quoi.organizer.persistence.entity.DayOrganizerEntity;
@@ -42,8 +44,6 @@ public class ChoiceOrganizerController {
     @Autowired
     private ChoiceOrganizerWrapper wrapper;
 
-    @Autowired
-    private ChoiceOrganizerRepository repository;
 
     @Autowired
     private RecipeExternalAdapter recipeAdapter;
@@ -71,7 +71,7 @@ public class ChoiceOrganizerController {
         Optional<DayOrganizerEntity> entity = dayRepository.findByIdFetchAll(request.getDayId());
         Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectCategoriesChoice(entity.get(), request.getTypeLabel());
         optChoice.ifPresent(choice -> insertCategory(choice, request.getCategoryId()));
-        return new ModelAndView("redirect:/editCategories?id="+request.getDayId());
+        return new ModelAndView("redirect:/editCategories?id=" + request.getDayId());
     }
 
     @GetMapping("/addChoice")
@@ -80,22 +80,32 @@ public class ChoiceOrganizerController {
         DayOrganizerEntity dayOrganizerEntity = dayRepository.findByIdFetchAll(id).get();
         DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
         DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
-        modelAndView.addObject("dayCategories", dayOrganizerDTO );
-        List <MealOrganizer> choiceList =  dayOrganizerService.createListLabel();
+        modelAndView.addObject("dayCategories", dayOrganizerDTO);
+        List<MealOrganizer> choiceList = dayOrganizerService.createListLabel();
         modelAndView.addObject("listChoice", choiceList);
         return modelAndView;
     }
 
     // en cours
     @PostMapping("/addChoice")
-    public ModelAndView newChoice(@ModelAttribute("request") AddChoiceDTORequest request) {
+    public ModelAndView newChoice(@ModelAttribute("request") AddChoiceDTORequest request) throws ApplicationCommunicationException {
+        boolean mealAlReadyExist = false;
         RecipeCategoriesChoiceOrganizerEntity recipeCategoriesChoiceOrganizerEntity = new RecipeCategoriesChoiceOrganizerEntity();
-        DayOrganizerEntity dayOrganizerEntity = new DayOrganizerEntity();
-        dayOrganizerEntity.setId(request.getDayId());
-        recipeCategoriesChoiceOrganizerEntity.setDay(dayOrganizerEntity);
-        recipeCategoriesChoiceOrganizerEntity.setMeal(request.getListChoice());
-        choiceOrganizerRepository.save(recipeCategoriesChoiceOrganizerEntity);
-        return new ModelAndView("redirect:/editCategories?id="+request.getDayId());
+        DayOrganizerEntity dayOrganizerEntity = dayRepository.findById(request.getDayId()).get();
+        DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
+        DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
+        for (MealOrganizerDTO mealOrganizerDTO : dayOrganizerDTO.getMeals()) {
+            if (mealOrganizerDTO.getTypeLabel().equalsIgnoreCase(request.getListChoice().labelFr())) {
+                mealAlReadyExist = true;
+                break;
+            }
+        }
+        if (!mealAlReadyExist) {
+            recipeCategoriesChoiceOrganizerEntity.setDay(dayOrganizerEntity);
+            recipeCategoriesChoiceOrganizerEntity.setMeal(request.getListChoice());
+            choiceOrganizerRepository.save(recipeCategoriesChoiceOrganizerEntity);
+        }
+        return new ModelAndView("redirect:/editCategories?id=" + request.getDayId());
     }
 
     @GetMapping("/editCategories")
@@ -104,7 +114,7 @@ public class ChoiceOrganizerController {
         DayOrganizerEntity dayOrganizerEntity = dayRepository.findByIdFetchAll(dayId).get();
         DayOrganizer dayOrganizer = dayWrapper.fromEntityWithDay(dayOrganizerEntity);
         DayOrganizerDTO dayOrganizerDTO = dayDtoWrapper.fromModel(dayOrganizer);
-        modelAndView.addObject("dayCategories", dayOrganizerDTO );
+        modelAndView.addObject("dayCategories", dayOrganizerDTO);
         return modelAndView;
     }
 
@@ -117,35 +127,37 @@ public class ChoiceOrganizerController {
         }
         return new ModelAndView("redirect:/organizer");
     }
+
     @GetMapping("/supCategories")
     public ModelAndView supCategories(@RequestParam("id") String dayId, @RequestParam("typeLabel") String typeLabel) {
         Optional<DayOrganizerEntity> entity = dayRepository.findByIdFetchAll(dayId);
         if (entity.isPresent()) {
             Optional<RecipeCategoriesChoiceOrganizerEntity> optChoice = selectCategoriesChoice(entity.get(), typeLabel);
+
             optChoice.ifPresent(choice -> deleteCategory(choice, dayId));
         }
-        return new ModelAndView("redirect:/editCategories?id="+dayId);
+        return new ModelAndView("redirect:/editCategories?id=" + dayId);
     }
 
     //TODO:Julien:To delete when POST newChoiceCategories with choiceIdRequestParam
     private Optional<RecipeCategoriesChoiceOrganizerEntity> selectOneCategoriesChoice(DayOrganizerEntity entity) {
-        for(ChoiceOrganizerEntity choice: entity.getChoices()) {
-            if(choice instanceof RecipeCategoriesChoiceOrganizerEntity) {
-                return Optional.of((RecipeCategoriesChoiceOrganizerEntity)choice);
+        for (ChoiceOrganizerEntity choice : entity.getChoices()) {
+            if (choice instanceof RecipeCategoriesChoiceOrganizerEntity) {
+                return Optional.of((RecipeCategoriesChoiceOrganizerEntity) choice);
             }
         }
         return Optional.empty();
     }
 
     private Optional<RecipeCategoriesChoiceOrganizerEntity> selectCategoriesChoice(DayOrganizerEntity entity, String typeLabel) {
-        for(ChoiceOrganizerEntity choice: entity.getChoices()) {
+        for (ChoiceOrganizerEntity choice : entity.getChoices()) {
             if (choice.getMeal() != null) {
                 if (choice.getMeal().labelFr().equalsIgnoreCase(typeLabel)) {
                     if (choice instanceof RecipeCategoriesChoiceOrganizerEntity) {
                         return Optional.of((RecipeCategoriesChoiceOrganizerEntity) choice);
                     }
                 }
-        }
+            }
         }
         return Optional.empty();
     }
@@ -153,20 +165,26 @@ public class ChoiceOrganizerController {
     //TODO:Julien:To delete when POST newChoiceCategories with choiceIdRequestParam
     private void insertCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
         choice.getRecipeCategoryIds().add(categoryId);
-        repository.save(choice);
+        choiceOrganizerRepository.save(choice);
     }
 
     private void updateCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
-       if (!choice.getRecipeCategoryIds().isEmpty()) {
-           choice.getRecipeCategoryIds().clear();
-           choice.getRecipeCategoryIds().add(categoryId);
-           repository.save(choice);
-       }
+        // if (!choice.getRecipeCategoryIds().isEmpty()) {
+        choice.getRecipeCategoryIds().clear();
+        choice.getRecipeCategoryIds().add(categoryId);
+        choiceOrganizerRepository.save(choice);
+        //  }
     }
 
     private void deleteCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
-        choice.getRecipeCategoryIds().clear();
-        repository.save(choice);
+        if (choice.getRecipeCategoryIds().isEmpty()) {
+            choiceOrganizerRepository.deleteById(choice.getId());
+          // choice.setMeal(null);
+        } else {
+            choice.getRecipeCategoryIds().clear();
+            choiceOrganizerRepository.save(choice);
+        }
+
     }
 
 

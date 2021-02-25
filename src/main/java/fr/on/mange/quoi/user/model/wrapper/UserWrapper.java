@@ -25,7 +25,6 @@ public class UserWrapper {
 
     public User fromEntity(UserEntity entity){
         User model = new User();
-
         model.setOptId(Optional.of(entity.getId()));
         model.setLogin(entity.getLogin());
         model.setFirstname(entity.getFirstname());

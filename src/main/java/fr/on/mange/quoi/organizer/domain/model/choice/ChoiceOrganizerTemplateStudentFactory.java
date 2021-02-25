@@ -73,6 +73,7 @@ public class ChoiceOrganizerTemplateStudentFactory implements ChoiceOrganizerTem
         DayOrganizerEntity sunday = new DayOrganizerEntity();
         sunday.setDayType(DayTypeOrganizerEntity.SUNDAY);
         sunday.getChoices().add(choice(MealOrganizer.ANYONE, "Café", "Céréales", "Gratin", "Féculant"));
+        organizerStudent.getDays().add(sunday);
 
         return organizerStudent;
     }

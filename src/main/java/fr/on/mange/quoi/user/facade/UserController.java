@@ -2,17 +2,20 @@ package fr.on.mange.quoi.user.facade;
 
 import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
 import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
-import fr.on.mange.quoi.organizer.facade.dto.OrganizerListDTO;
 import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
-import fr.on.mange.quoi.organizer.persistence.repository.DayOrganizerRepository;
 import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
 import fr.on.mange.quoi.user.facade.dto.UserRegistrationDTO;
 import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
 import fr.on.mange.quoi.user.model.User;
 import fr.on.mange.quoi.user.model.service.UserService;
+import fr.on.mange.quoi.user.persistance.SpringUserDetailService;
+import fr.on.mange.quoi.user.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -30,6 +33,11 @@ public class UserController{
     @Autowired
     private OrganizerService organizerService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    SpringUserDetailService logService;
 
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@ModelAttribute("userregisterdto") UserRegistrationDTO userDTO) {
@@ -54,4 +62,6 @@ public class UserController{
     public ModelAndView displayLoginPage(){
         return new ModelAndView("login");
     }
+
+
 }
