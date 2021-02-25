@@ -14,6 +14,9 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private static final String LOGIN_AUTO_USER = "autoUser";
+
     @Autowired
     private UserRepository repository;
 
@@ -35,13 +38,17 @@ public class UserService {
         }
     }
 
-    public UserRegistrationDTO autoLog() {
-        UserRegistrationDTO autoUser = new UserRegistrationDTO();
+    public User createAutoConnectionUser() {
+        UserEntity autoUser = new UserEntity();
         autoUser.setFirstname("autoFirstName");
         autoUser.setLastname("autoLastName");
-        autoUser.setLogin("autoUser");
+        autoUser.setLogin(LOGIN_AUTO_USER);
         autoUser.setEmail("autoUser@Gmail.com");
         autoUser.setPassword("123");
-        return autoUser;
+        return wrapper.fromEntity(repository.save(autoUser));
+    }
+
+    public boolean isExistAutoConnectionUser() {
+        return repository.findByLogin(LOGIN_AUTO_USER).isPresent();
     }
 }
