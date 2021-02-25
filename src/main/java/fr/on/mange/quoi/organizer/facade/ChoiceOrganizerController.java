@@ -44,8 +44,6 @@ public class ChoiceOrganizerController {
     @Autowired
     private ChoiceOrganizerWrapper wrapper;
 
-    @Autowired
-    private ChoiceOrganizerRepository repository;
 
     @Autowired
     private RecipeExternalAdapter recipeAdapter;
@@ -167,23 +165,26 @@ public class ChoiceOrganizerController {
     //TODO:Julien:To delete when POST newChoiceCategories with choiceIdRequestParam
     private void insertCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
         choice.getRecipeCategoryIds().add(categoryId);
-        repository.save(choice);
+        choiceOrganizerRepository.save(choice);
     }
 
     private void updateCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
         // if (!choice.getRecipeCategoryIds().isEmpty()) {
         choice.getRecipeCategoryIds().clear();
         choice.getRecipeCategoryIds().add(categoryId);
-        repository.save(choice);
+        choiceOrganizerRepository.save(choice);
         //  }
     }
 
     private void deleteCategory(RecipeCategoriesChoiceOrganizerEntity choice, String categoryId) {
         if (choice.getRecipeCategoryIds().isEmpty()) {
-           choice.setMeal(null);
+            choiceOrganizerRepository.deleteById(choice.getId());
+          // choice.setMeal(null);
+        } else {
+            choice.getRecipeCategoryIds().clear();
+            choiceOrganizerRepository.save(choice);
         }
-        choice.getRecipeCategoryIds().clear();
-        repository.save(choice);
+
     }
 
 
