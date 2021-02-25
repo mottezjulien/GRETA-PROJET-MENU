@@ -1,9 +1,11 @@
 package fr.on.mange.quoi;
 
+import fr.on.mange.quoi.generic.exception.ApplicationServiceException;
 import fr.on.mange.quoi.menu.MealMenu;
 import fr.on.mange.quoi.menu.persistence.*;
 import fr.on.mange.quoi.organizer.domain.model.MealOrganizer;
 import fr.on.mange.quoi.organizer.domain.model.choice.RecipeCategoriesChoicePreparationOrganizer;
+import fr.on.mange.quoi.organizer.domain.service.OrganizerService;
 import fr.on.mange.quoi.organizer.persistence.entity.DayOrganizerEntity;
 import fr.on.mange.quoi.organizer.persistence.entity.DayTypeOrganizerEntity;
 import fr.on.mange.quoi.organizer.persistence.entity.OrganizerEntity;
@@ -13,6 +15,9 @@ import fr.on.mange.quoi.organizer.persistence.repository.DayOrganizerRepository;
 import fr.on.mange.quoi.organizer.persistence.repository.OrganizerRepository;
 import fr.on.mange.quoi.recipe.persistence.entity.RecipeCategoryEntity;
 import fr.on.mange.quoi.recipe.persistence.repository.RecipeCategoryRepository;
+import fr.on.mange.quoi.user.facade.wrapper.UserRegistrationDTOWrapper;
+import fr.on.mange.quoi.user.model.User;
+import fr.on.mange.quoi.user.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -51,9 +56,23 @@ public class Runner {
     @Autowired
     private MenuRepository menuRepository;
 
+    @Autowired
+    private OrganizerService organizerService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRegistrationDTOWrapper wrapper;
+
 
     @EventListener(ApplicationReadyEvent.class)
-    public void doSomethingAfterStartup() {
+    public void doSomethingAfterStartup() throws ApplicationServiceException {
+        User user = userService.saveNewUser(wrapper.fromDTO(userService.autoLog()));
+        OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(), "Auto Organizer"));
+        organizerService.initDays(organizerEntity);
+        userService.saveNewDefaultOrganizer(user.getLogin(), organizerEntity.getId());
+
         if (organizerRepository.count() == 0) {
             initrOrganizer();
         }

@@ -12,7 +12,10 @@ import fr.on.mange.quoi.user.persistance.SpringUserDetailService;
 import fr.on.mange.quoi.user.persistance.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -59,18 +62,6 @@ public class UserController{
     public ModelAndView displayLoginPage(){
         return new ModelAndView("login");
     }
-
-    /*@GetMapping(value = "/autoLog")
-    public ModelAndView autoLog() throws ApplicationServiceException {
-        if (userRepository.findByLogin("autoUser").isEmpty()){
-            User user = service.saveNewUser(wrapper.fromDTO(service.autoLog()));
-            OrganizerEntity organizerEntity = organizerRepository.save(new OrganizerEntity(user.getOptId().get(), "Auto Organizer"));
-            organizerService.initDays(organizerEntity);
-            service.saveNewDefaultOrganizer(user.getLogin(), organizerEntity.getId());
-        }
-        logService.loadUserByUsername("autoUser");
-        return new ModelAndView("autoLog");
-    } */
 
 
 }
