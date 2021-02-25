@@ -73,16 +73,16 @@ public class Runner {
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() throws ApplicationServiceException {
 
-        if (!(userRepository.findByLogin("autoUser").isPresent())) {
-            initAutoLog();
-        }
-
         if (organizerRepository.count() == 0) {
             initrOrganizer();
         }
         if(menuRepository.count() == 0) {
             initMenu();
         }
+        if (!(userRepository.findByLogin("autoUser").isPresent())) {
+            initAutoLog();
+        }
+
     }
 
     private void initAutoLog() throws ApplicationServiceException {
